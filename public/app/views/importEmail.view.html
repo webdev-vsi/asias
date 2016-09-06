@@ -1,0 +1,43 @@
+<div ng-controller="EmailImportCtrl">
+    <nav class="navbar navbar-default navbar-static-top asias-navbar">
+        <a href="#/email-list">
+            < back</a>
+                <label>Import Email to Interpelation</label>
+    </nav>
+    <div class="col-md-4">
+        <p>
+            Message Details
+        </p>
+
+        <p>
+            Sent Date-
+            <label>{{messageToImport.sentDate | date:'dd-MM-yyyy'}}</label>
+        </p>
+        <p>
+            From -
+            <label>{{messageToImport.from}}</label>
+        </p>
+        <p>
+            To -
+            <label>{{messageToImport.to}}</label>
+        </p>
+        <p>
+            Subiectu -
+            <label>{{messageToImport.subject}}</label>
+        </p>
+        <p class="col-md-10">
+            Continut -
+            <label>{{messageToImport.content | htmlToPlaintext}}</label>
+        </p>
+
+    </div>
+    <div class="col-md-1">
+        <button ng-click="getDate(messageToImport)">Copy Data</button>
+    </div>
+    <div class="col-md-7">
+        <div ng-show="hideInterpelation" class="intpl-body">
+            <!-- template usage -->
+            <create-interpelation></create-interpelation>
+        </div>
+    </div>
+</div>

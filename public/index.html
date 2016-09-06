@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html ng-app="ngAsiasApp">
+
+<head>
+    <title>Asias App</title>
+    <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+    <link rel="stylesheet" media="screen" href="/css/dashboard.css">
+    <link rel="stylesheet" media="screen" href="/css/bootstrap-datetimepicker.min.css">
+    <link type="application/font-woff2" href="/fonts/glyphicons-halflings-regular.woff2">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">SI ASIAS</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <div class="nav nav-sidebar">
+                    <div class="text-center ">
+
+                        <a class="btn success" ng-click="createIntpl=true" id="add" href="">
+                            <input type="button" value="Creare Demers" class="btn btn-primary">
+                        </a>
+                        <!--input id="create-interpelation-btn" type="button" value="Creare Demers" class="btn btn-primary"-->
+                    </div>
+                </div>
+
+                <label><span class="glyphicon glyphicon-envelope"></span> Registru demersurilor</label>
+
+                <ul class="nav">
+                    <li class="active"><a href="#/"><span class="glyphicon glyphicon-download"></span> Intrari <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#/"><span class="glyphicon glyphicon-upload"></span> Iesiri</a></li>
+                    <li ng-controller="EmailCountCtrl"><a href="#/email-list"><span class="glyphicon glyphicon-inbox"></span> Lista email <span id="mailCount" class="badge">{{emailsCount}}</span> </a> </li>
+                </ul>
+                <label><span class="glyphicon glyphicon-folder-open"></span> Nomenclatoare</label>
+                <ul class="nav ">
+                    <li><a href="/#/countries"><span class="glyphicon glyphicon-globe"></span> Tari</a></li>
+                    <li><a href="/#/customs-offices"><span class="glyphicon glyphicon-flag"></span> Birouri Vamale</a></li>
+                    <li><a href="/#/subjects"><span class="glyphicon glyphicon-tags"></span> Tipuri de subiecte</a></li>
+                    <li><a href="/#/authorities"><span class="glyphicon glyphicon-modal-window"></span> Autoritati</a></li>
+                </ul>
+                <label><span class="glyphicon glyphicon-folder-open"></span> Rapoarte</label>
+                <ul class="nav ">
+                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Generalizator pe tari</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Cererile de asistenta pe autoritati</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Generalizator pe tip de subiect</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Generalizator pe perioada</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Dupa statutul interpelarii</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main padding-zero">
+
+                <!-- div class="filter-panel">
+                      <div class="col-md-1">
+                        <label>Filters panel</label>
+                      </div>
+                    <div class="col-md-3">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Action <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#">Action</a></li>
+                          <li><a href="#">Another action</a></li>
+                          <li><a href="#">Something else here</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="#">Separated link</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                      <div class="col-md-3">
+                        <div class="input-group">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                          </span>
+                          <input type="text" class="form-control" placeholder="Search for...">
+                        </div>
+                      </div>
+                    </div -->
+                <div class="panel-padding" ng-view=""></div>
+
+
+            </div>
+        </div>
+    </div>
+    <div id="create-interpellation" class="intpl-create-form" ng-show="createIntpl">
+        <div class="intpl-form-header">
+            <div>
+                <p><span class="glyphicon glyphicon-envelope"></span> Demers Nou </p>
+            </div>
+            <div class="right">
+                <a ng-init="hideInterpelation=true" ng-click="hideInterpelation= !hideInterpelation" href="" id="intpl-hide">
+                    <span class="glyphicon " ng-class="(hideInterpelation)? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></span>
+                </a>
+                <a ng-click="createIntpl=false" href="" id="intpl-close">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+            </div>
+
+        </div>
+        <div ng-show="hideInterpelation" class="intpl-body" ng-controller="IntplCreateCtrl">
+            <create-interpelation></create-interpelation>
+        </div>
+
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-resource.min.js"></script>
+    <script src="js/angular-sanitize.js"></script>
+    <script src="js/angular-cookies.js"></script>
+
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="app/app2.js"></script>
+    <script src="app/services/services.js"></script>
+    <script src="app/controllers/controllers.js"></script>
+    <script src="js/angular-bootstrap-datetimepicker-directive.min.js"></script>
+    <!--script>
+          $('#create-interpellation').draggable();
+        </script-->
+    <!--<script src="app/services/interpelations.service.js"></script>
+        <script src="app/services/email.service.js"></script>
+        <script src="app/controllers/interpelations.js"></script>
+        <script src="app/controllers/listEmails.js"></script>-->
+</body>
+
+</html>

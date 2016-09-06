@@ -1,0 +1,32 @@
+<p>Interpelations List</p>
+<div ng-controller="InterpelationsCtrl">
+  <table class="table table-striped">
+    <thead>
+      <th>ID</th>
+      <th>Interpelation Nr</th>
+      <th>Data</th>
+      <th>Tara</th>
+      <th>Post</th>
+      <th>Subiectul</th>
+      <th>Autoritatea</th>
+      <th>Descrierea</th>
+      <th>Mesaju</th>
+      <th>Edit</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="interpelation in interpelations">
+        <td>{{interpelation.id}}</td>
+        <td>{{interpelation.interpelationNr}}</td>
+        <td>{{interpelation.interpelationDate}}</td>
+        <td>{{interpelation.country}}</td>
+        <td>{{interpelation.customsOffice}}</td>
+        <td>{{interpelation.subjectType}}</td>
+        <td>{{interpelation.authority}}</td>
+        <td>{{interpelation.description}}</td>
+        <td>{{interpelation.mailMessage}}</td>
+        <td><a href="#/interpelations/{{interpelation.id}}">Edit</a></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>

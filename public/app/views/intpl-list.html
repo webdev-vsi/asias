@@ -1,0 +1,88 @@
+<div>
+    <table class="table table-striped">
+        <thead>
+            <!--th>ID</th-->
+            <th>Numarul de intrare</th>
+            <th>Data intrarii</th>
+            <th>Tara</th>
+            <th>Denumirea solicitantului</th>
+            <th>Subiectul</th>
+            <th>Referinta de intrare
+                <br /> a solicitantului</th>
+            <th>Descrierea</th>
+            <th>Mesaju</th>
+            <th>Prioritatea</th>
+            <th>Operatiune</th>
+        </thead>
+        <tbody>
+            <!--tr ng-repeat="interpelation in tree">
+        <td>{{interpelation.id}}</td>
+        <td>{{interpelation.interpelationNr}}</td>
+        <td>{{interpelation.interpelationDate | date:'dd-MM-yyyy'}}</td>
+        <td>{{interpelation.country.countryName}}</td>
+        <td>{{interpelation.customsOffice.namePost}}</td>
+        <td>{{interpelation.subjectType.subjectName}}</td>
+        <td>{{interpelation.authority.authorityName}}</td>
+        <td>{{interpelation.description}}</td>
+        <td>{{interpelation.mailMessage}}</td>
+        <td><a ng-click="editIntpl(interpelation.id)">Edit</a></td>
+      </tr-->
+
+            <!--ul ng-repeat="interpelation in tree">
+        <li>{{interpelation.id}}</li>
+        <li>{{interpelation.interpelationNr}}</li>
+        <li>{{interpelation.interpelationDate | date:'dd-MM-yyyy'}}</li>
+        <li>{{interpelation.country.countryName}}</li>
+        <li>{{interpelation.customsOffice.namePost}}</li>
+        <li>{{interpelation.subjectType.subjectName}}</li>
+        <li>{{interpelation.authority.authorityName}}</li>
+        <li>{{interpelation.description}}</li>
+        <li>{{interpelation.mailMessage}}</li>
+        <ul ng-repeat="child in interpelation.children">
+          <li>{{child.id}}</li>
+          <li>{{child.interpelationNr}}</li>
+          <li>{{child.interpelationDate | date:'dd-MM-yyyy'}}</li>
+          <li>{{child.country.countryName}}</li>
+          <li>{{child.customsOffice.namePost}}</li>
+          <li>{{child.subjectType.subjectName}}</li>
+          <li>{{child.authority.authorityName}}</li>
+          <li>{{child.description}}</li>
+          <li>{{child.mailMessage}}</li>
+        </ul>
+        <ul ng-repeat="child2 in child.children">
+          <li>{{child2.id}}</li>
+          <li>{{child2.interpelationNr}}</li>
+          <li>{{child2.interpelationDate | date:'dd-MM-yyyy'}}</li>
+          <li>{{child2.country.countryName}}</li>
+          <li>{{child2.customsOffice.namePost}}</li>
+          <li>{{child2.subjectType.subjectName}}</li>
+          <li>{{child2.authority.authorityName}}</li>
+          <li>{{child2.description}}</li>
+          <li>{{child2.mailMessage}}</li>
+        </ul>
+      </ul-->
+
+
+
+            <tr ng-repeat="interpelation in interpelations | orderBy: '-interpelationNr'">
+                <!--td>{{interpelation.id}}</td-->
+                <td>{{interpelation.interpelationNr }}</td>
+                <td>{{interpelation.interpelationDate | date:'dd-MM-yyyy'}}</td>
+                <td>{{interpelation.country.countryName}}</td>
+                <td>{{interpelation.authority.authorityName}}</td>
+                <td>{{interpelation.subjectType.subjectName}}</td>
+                <td>{{interpelation.authorityInterpelationNr}}</td>
+                <td>{{interpelation.description}}</td>
+                <td>{{interpelation.mailMessage.content}}</td>
+                <td>
+                    <span ng-class="{'priority-low': interpelation.interpelationPriority == 'SCAZUTA',
+                          'priority-middle': interpelation.interpelationPriority == 'MEDIE',
+                          'priority-high': interpelation.interpelationPriority == 'RIDICATA',}">
+                          {{interpelation.interpelationPriority}}
+                    </span>
+                </td>
+                <td><a ng-click="editIntpl(interpelation.id)">Editare</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

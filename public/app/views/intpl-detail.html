@@ -1,0 +1,92 @@
+<div >
+<nav class="navbar navbar-default navbar-static-top asias-navbar">
+  <div class="row">
+    <div class="col-sm-4">
+      <label>Interpelarea Nr:  {{tree[0].interpelationNr}}</label>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+      <button type="button" class="btn btn-default"><a href="/#/">Inchide</a></button>
+      <button type="button" class="btn btn-default">Atribuie</button>
+      <button type="button" class="btn btn-default">Raspunde</button>
+    </div>
+  </div>
+</nav>
+
+<!--div class="panel panel-primary interpelation-body">
+  <div class="panel-heading">
+    <span>  Interpelarea Nr:  {{intpl.interpelationNr}} </span>
+  </div>
+  <div class="panel-body">
+    <form class="form-horizontal">
+        <div class="form-group">
+          <label class="col-sm-2 " for="interpelationNr">Nr</label>
+          <div class="col-sm-2">
+            <p ng-hide="editMode" class="form-control-static">{{intpl.interpelationNr}}</p>
+            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="intpl.interpelationNr">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class=" col-sm-2" for="interpelationDate">Date</label>
+          <div class="col-sm-2">
+            <p ng-hide="editMode" class="form-control-static">{{intpl.interpelationDate | date: "dd-MM-yyyy"}}</p>
+            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"    ng-model="intpl.interpelationDate ">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2" for="interpelationNr">Country</label>
+          <div class="col-sm-2">
+            <p ng-hide="editMode" class="form-control-static">{{intpl.country.countryName}}</p>
+            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="intpl.country">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2" for="interpelationNr">Subject Type</label>
+          <div class="col-sm-2">
+            <p ng-hide="editMode" class="form-control-static">{{intpl.subjectType.subjectName}}</p>
+            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="intpl.subjectType">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2" for="interpelationNr">Authority</label>
+          <div class="col-sm-2">
+            <p ng-hide="editMode" class="form-control-static">{{intpl.authority.authorityName}}</p>
+            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="intpl.authority">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2" for="interpelationNr">Description</label>
+          <div class="col-sm-2">
+            <p ng-hide="editMode" class="form-control-static">{{intpl.description}}</p>
+            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"   ng-model="intpl.description">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2" for="interpelationNr">Mail Message</label>
+          <div class="col-sm-2">
+            <textarea class="form-control" rows="3" ng-model="intpl.mailMessage"></textarea>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="btn-group col-sm-5"  role="group" aria-label="...">
+        <button ng-click="editMode = !editMode" type="button" class="btn btn-default">Edit</button>
+        <button type="button" class="btn btn-primary">Create Response</button>
+        <button ng-show="editMode" class="btn btn-success" ng-click="saveInterpelation()">Save Interpelation</button>
+      </div>
+
+      <br/><br/>
+    </form>
+
+
+  </div-->
+  <ul class="col-md-8">
+      <li ng-repeat="item in tree track by $index "  ng-include="templateTree" ></li>
+  </ul>
+</div>

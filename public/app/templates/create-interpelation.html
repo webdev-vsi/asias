@@ -1,0 +1,139 @@
+<table>
+    <form method="post">
+        <tr>
+            <td class="col-md-6">Prioritatea Demersului</td>
+            <td>
+                <select ng-init="selectedInterpelationPriority='MEDIE'" class="form-control" ng-model="selectedInterpelationPriority" ng-options="selectedInterpelationPriority for selectedInterpelationPriority  in interpelationPriority ">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Nr.demers intial ACSV</td>
+            <td>
+                <input class="form-control" type="text" name="interpelationNr" ng-model="intpl.interpelationNr">
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Data demers intial ACSV</td>
+            <td>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input datetimepicker name="interpelationDate" ng-model="intpl.interpelationDateInitialACSV" type='text' class="form-control" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Tara Solicitantului</td>
+            <td>
+                <select ng-init="selectedCountry=498" class="form-control" ng-model="selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Autoritatea Solicitanta</td>
+            <td>
+                <select class="form-control" ng-model="selectedAuthoritie" ng-options="selectedAuthoritie.id as selectedAuthoritie.authorityName for selectedAuthoritie in authorities | orderBy:'authorityName'">
+                </select>
+            </td>
+            <td class="col-md-1">
+                <span ng-init="hideAuthorityForm=true" ng-click="hideAuthorityForm= !hideAuthorityForm" class="glyphicon glyphicon glyphicon-plus"></span>
+                <div ng-hide="hideAuthorityForm" class="pop-up-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="authorityName">Denumire Autoritate</label>
+                            <input type="text" class="form-control" id="authorityName" placeholder="Denumire">
+                        </div>
+                        <div class="form-group">
+                            <label for="authorityType">Tip Autoritate</label>
+                            <select class="form-control">
+                                <option>
+                                    INTERN
+                                </option>
+                                <option>
+                                    EXTERN
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">Tara Autoritate</label>
+                            <select ng-init="selectedCountry=498" class="form-control" ng-model="selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                            </select>
+                        </div>
+                        <button type="submit" ng-click="addAuthority(authority)" class="btn btn-success">Adauga</button>
+                        <button type="submit" ng-click="hideAuthorityForm= !hideAuthorityForm" class="btn btn-danger">Renunta</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Denumirea autoritatii solicitante:</td>
+            <td>
+                <input class="form-control" type="text" class="input-sm">
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Nr. de referinta a demersului solicitantului</td>
+            <td>
+                <input class="form-control" type="text" class="input-sm">
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Data demersului solicitantului</td>
+            <td>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input ng-init="intpl.interpelationDateApplicant=null" datetimepicker name="interpelationDate" ng-model="intpl.interpelationDateApplicant" type='text' class="form-control" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Subiectul Cererei</td>
+            <td>
+                <select class="form-control" ng-model="selectedSubjectType" ng-options="selectedSubjectType.id as selectedSubjectType.subjectName for selectedSubjectType in subjectTypes | orderBy:'subjectName'">
+                </select>
+            </td>
+            <td class="col-md-1">
+
+                <span ng-init="hideSubjectForm=true" ng-click="hideSubjectForm= !hideSubjectForm" class="glyphicon glyphicon-plus"></span>
+                <div ng-hide="hideSubjectForm" class="pop-up-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="subjectType">Subiect</label>
+                            <input type="text" class="form-control" id="intplSubject" placeholder="subiect" ng-model="subjectType">
+                        </div>
+                        <button type="submit" ng-click="addSubject(subject)" class="btn btn-success">Adauga</button>
+                        <button type="submit" ng-click="hideSubjectForm= !hideSubjectForm" class="btn btn-danger">Renunta</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Detalii:</td>
+            <td>
+                <textarea ng-init="intpl.description=null" rows="5" cols="15" class="form-control" ng-model="intpl.description"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-6">Termenul de executare</td>
+            <td>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input ng-init="null" datetimepicker name="interpelationDate" ng-model="intpl.executionDeadline" type='text' class="form-control" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td class="right">
+                <span ng-click="refresh()" class="glyphicon glyphicon-refresh"></span>
+                <input ng-click="createNewIntpl()" id="saveIntpl" type="submit" value="Salvare Demers" class="btn btn-success">
+            </td>
+        </tr>
+    </form>
+</table>

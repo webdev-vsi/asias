@@ -1,0 +1,45 @@
+<nav class="navbar navbar-default navbar-static-top asias-navbar">
+    <label>Lista Emailuri</label>
+    <a ng-click="markAsProcessed()">Proccess Message</a>
+</nav>
+
+<div ng-controller="EmailListCtrl">
+    <table class="table  table-width-fix">
+        <thead>
+            <!--th>ID</th-->
+            <th>De la</th>
+            <th>Data</th>
+            <th>Raspunde la</th>
+            <th>Catre</th>
+            <th>Subiectul</th>
+            <th>Continut</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="email in listEmails">
+                <td>
+                    {{email.from}}
+                </td>
+                <td>
+                    {{email.sentDate | date:'dd-MM-yyyy'}}
+                </td>
+
+                <td>
+                    {{email.replyTo}}
+                </td>
+                <td>
+                    {{email.to}}
+                </td>
+                <td>
+                    {{email.subject}}
+                </td>
+                <td>
+                    {{email.content | htmlToPlaintext}}
+                </td>
+                <td>
+                    <a ng-click="importEmail(email.messageId)">Import Message</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

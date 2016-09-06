@@ -1,0 +1,60 @@
+<div ng-controller="InterpelationCtrl">
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="row">
+    <div class="col-sm-4">
+      <label>Interpelarea Nr:  {{interpelation.interpelationNr}}</label>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+      <button type="button" class="btn btn-default">Inchide</button>
+      <button type="button" class="btn btn-default">Atribuie</button>
+      <button type="button" class="btn btn-default">Raspunde</button>
+      <button type="button" class="btn btn-default">Forward</button>
+    </div>
+  </div>
+</nav>
+  <form ng-controller="CreateInterpelationCtrl">
+    <div class="row">
+      <div class="form-group col-sm-2">
+        <label for="interpelationNr">Nr</label>
+        <input type="text" class="form-control" id="exampleInputEmail1"  ng-model="interpelation.interpelationNr">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-2">
+        <label for="interpelationDate">Date</label>
+        <input type="text" class="form-control" id="exampleInputEmail1"  ng-model="interpelation.interpelationDate">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-2">
+        <label for="interpelationNr">Country</label>
+        <input type="text" class="form-control" id="exampleInputEmail1"  ng-model="interpelation.country">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-2">
+        <label for="interpelationNr">Subject Type</label>
+        <input type="text" class="form-control" id="exampleInputEmail1"  ng-model="interpelation.subjectType">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-2">
+        <label for="interpelationNr">Authority</label>
+        <input type="text" class="form-control" id="exampleInputEmail1"  ng-model="interpelation.authority">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-2">
+        <label for="interpelationNr">Description</label>
+        <input type="text" class="form-control" id="exampleInputEmail1"  ng-model="interpelation.description">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-2">
+        <label for="interpelationNr">Mail Message</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" ng-model="interpelation.mailMessage">
+      </div>
+    </div>
+    <button class="btn btn-success" ng-click="saveInterpelation()">Save Interpelation</button>
+  </form>
+</div>
