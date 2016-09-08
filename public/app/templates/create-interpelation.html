@@ -3,7 +3,7 @@
         <tr>
             <td class="col-md-6">Prioritatea Demersului</td>
             <td>
-                <select ng-init="selectedInterpelationPriority='MEDIE'" class="form-control" ng-model="selectedInterpelationPriority" ng-options="selectedInterpelationPriority for selectedInterpelationPriority  in interpelationPriority ">
+                <select ng-init="intpl.selectedInterpelationPriority='MEDIE'" class="form-control" ng-model="intpl.selectedInterpelationPriority" ng-options="selectedInterpelationPriority for selectedInterpelationPriority  in interpelationPriority ">
                 </select>
             </td>
         </tr>
@@ -27,14 +27,14 @@
         <tr>
             <td class="col-md-6">Tara Solicitantului</td>
             <td>
-                <select ng-init="selectedCountry=498" class="form-control" ng-model="selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                <select ng-init="intpl.selectedCountry=498" class="form-control" ng-model="intpl.selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
                 </select>
             </td>
         </tr>
         <tr>
             <td class="col-md-6">Autoritatea Solicitanta</td>
             <td>
-                <select class="form-control" ng-model="selectedAuthoritie" ng-options="selectedAuthoritie.id as selectedAuthoritie.authorityName for selectedAuthoritie in authorities | orderBy:'authorityName'">
+                <select class="form-control" ng-model="intpl.selectedAuthoritie" ng-options="selectedAuthoritie.id as selectedAuthoritie.authorityName for selectedAuthoritie in authorities | orderBy:'authorityName'">
                 </select>
             </td>
             <td class="col-md-1">

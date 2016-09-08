@@ -454,6 +454,25 @@ app.controller('EmailImportCtrl', ['$scope',
             console.log($scope.intpl.executionDeadline);
         }
 
+        $scope.createNewIntpl = function() {
+            console.log($scope.intpl);
+            var intplObject = {
+                "parentId": 0,
+                "interpelationNr": $scope.intpl.interpelationNr,
+                "interpelationType": $scope.intpl.inter,
+                "interpelationPriority": $scope.intpl.selectedInterpelationPriority,
+                "interpelationDate": $scope.intpl.interpelationDateInitialACSV,
+                "executionDate": null,
+                "country": $scope.intpl.selectedCountry,
+                "customsOffice": null,
+                "subjectType": null,
+                "subjectTypeOptional": null,
+                "authority": $scope.intpl.selectedAuthoritie,
+                "applicantInterpelationDate": null,
+                "description": null,
+            };
+        };
+
     }
 ]);
 app.directive('createInterpelation', function() {
