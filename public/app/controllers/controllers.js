@@ -183,7 +183,7 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
 
             // actions performed after validation
             if (true) {
-
+                InterpelationCreateFactory.create(data);
                 console.log("data saved");
                 return this.editMode = !this.editMode;
             } else {
@@ -288,19 +288,19 @@ app.controller('IntplCreateCtrl', ['$scope',
 
             //AuthoritiesFactory
             $scope.intpl.authority = {
-                "id": $scope.selectedAuthoritie
+                "id": $scope.intpl.selectedAuthoritie
             };
 
             //Subject
             $scope.intpl.subjectType = {
-                "id": $scope.selectedSubjectType
+                "id": $scope.intpl.selectedSubjectType
             };
             $scope.intpl.interpelationPriority = $scope.intpl.selectedInterpelationPriority;
             //Convert To Timestamp
             $scope.intpl.interpelationDateInitialACSV = new Date($scope.intpl.interpelationDateInitialACSV.split("-").reverse().join("-")).getTime();
             //console.log($scope.intpl.interpelationDate);
             //console.log($scope.intpl.country);
-
+            $scope.intpl.interpelationDate = $scope.intpl.interpelationDateInitialACSV;
             // Interpelation Creation from Factory
             InterpelationCreateFactory.create($scope.intpl);
             console.log($scope.intpl);
