@@ -295,12 +295,9 @@ app.controller('IntplCreateCtrl', ['$scope',
             $scope.intpl.subjectType = {
                 "id": $scope.selectedSubjectType
             };
-
-            $scope.intpl.interpelationPriority = $scope.selectedInterpelationPriority;
-
-
+            $scope.intpl.interpelationPriority = $scope.intpl.selectedInterpelationPriority;
             //Convert To Timestamp
-            $scope.intpl.interpelationDate = new Date($scope.intpl.interpelationDate.split("-").reverse().join("-")).getTime();
+            $scope.intpl.interpelationDateInitialACSV = new Date($scope.intpl.interpelationDateInitialACSV.split("-").reverse().join("-")).getTime();
             //console.log($scope.intpl.interpelationDate);
             //console.log($scope.intpl.country);
 
@@ -332,14 +329,19 @@ app.controller('CustomsOfficesCtrl', ['$scope',
     }
 ]);
 
-app.controller('EmailCountCtrl', function($scope, $http) {
-    $scope.emailsCount = "-";
-    $http.get("http://localhost:8080/mail-count")
-        .then(function(response) {
-            $scope.emailsCount = response.data;
+app.controller('EmailCountCtrl', ['$scope', '$http', 'EmailCountFactory', 'EmailListFactory', function($scope, $http, EmailCountFactory,EmailListFactory) {
+    $scope.emailsCount = "";
+    //$http.get("http://localhost:8080/mail-count")
+    //    .then(function(response) {
+    //        $scope.emailsCount = response.data;
             //console.log($scope.myWelcome);
-        });
-});
+    //    });
+  //  var emaillength = EmailListFactory.query();
+  //  console.log(emaillength);
+  //  $scope.emailsCount  = emaillength.length;
+    //$scope.emailsCount = length.length();
+    //$scope.emailsCount  = EmailCountFactory.query();
+}]);
 app.controller('EmailListCtrl', ['$scope', '$http', 'EmailListFactory', '$location', 'EmailImportFactory',
     function($scope, $http, EmailListFactory, $location, EmailImportFactory) {
         $scope.listEmails = EmailListFactory.query();
@@ -455,22 +457,29 @@ app.controller('EmailImportCtrl', ['$scope',
         }
 
         $scope.createNewIntpl = function() {
-            console.log($scope.intpl);
+            //var id = "%3C25c47b8bae2b728443faaaa74d1cbd65@vsi.md%3E";
             var intplObject = {
-                "parentId": 0,
-                "interpelationNr": $scope.intpl.interpelationNr,
-                "interpelationType": $scope.intpl.inter,
-                "interpelationPriority": $scope.intpl.selectedInterpelationPriority,
-                "interpelationDate": $scope.intpl.interpelationDateInitialACSV,
-                "executionDate": null,
-                "country": $scope.intpl.selectedCountry,
-                "customsOffice": null,
-                "subjectType": null,
-                "subjectTypeOptional": null,
-                "authority": $scope.intpl.selectedAuthoritie,
-                "applicantInterpelationDate": null,
-                "description": null,
+            //   "id" : "%3C25c47b8bae2b728443faaaa74d1cbd65@vsi.md%3E",
+                 "parentId": "0",
+                 "interpelationNr": $scope.intpl.interpelationNr
+            //    "interpelationType": $scope.intpl.inter,
+            //    "interpelationPriority": $scope.intpl.selectedInterpelationPriority,
+            //    "interpelationDate": $scope.intpl.interpelationDateInitialACSV,
+            //    "executionDate": null,
+            //    "country": $scope.intpl.selectedCountry,
+            //    "customsOffice": null,
+            //    "subjectType": $scope.intpl.selectedSubjectType,
+            //    "subjectTypeOptional": null,
+            //    "authority": $scope.intpl.selectedAuthoritie,
+            //    "applicantInterpelationDate": null,
+            //    "description": $scope.intpl.description,
             };
+            var id = $routeParams.id;
+            console.log($scope.intpl);
+            console.log(intplObject);
+            var intplObjectPretty = angular.toJson(intplObject);
+            console.log(intplObjectPretty);
+            EmailImportFactory.create({id:id},$scope.intpl);
         };
 
     }

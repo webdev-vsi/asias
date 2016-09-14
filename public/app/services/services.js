@@ -12,7 +12,7 @@ services.factory('InterpelationsFactory', function($resource) {
             method: 'GET',
             isArray: true
         }
-    })
+    });
 });
 
 services.factory('InterpelationCreateFactory', function($resource) {
@@ -20,7 +20,7 @@ services.factory('InterpelationCreateFactory', function($resource) {
         create: {
             method: 'POST'
         }
-    })
+    });
 });
 
 services.factory('InterpelationFactory', function($resource) {
@@ -40,7 +40,7 @@ services.factory('InterpelationFactory', function($resource) {
                 id: '@id'
             }
         }
-    })
+    });
 });
 
 services.factory('InterpelationSubjectFactory', function($resource) {
@@ -52,7 +52,7 @@ services.factory('InterpelationSubjectFactory', function($resource) {
         create: {
             method: 'POST'
         }
-    })
+    });
 });
 
 services.factory('InterpelationTypeFactory', function($resource) {
@@ -61,7 +61,7 @@ services.factory('InterpelationTypeFactory', function($resource) {
             method: 'GET',
             isArray: true
         }
-    })
+    });
 });
 
 
@@ -71,7 +71,7 @@ services.factory('InterpelationPriorityFactory', function($resource) {
             method: 'GET',
             isArray: true
         }
-    })
+    });
 });
 
 services.factory('InterpelationTreeFactory', function($resource) {
@@ -80,8 +80,8 @@ services.factory('InterpelationTreeFactory', function($resource) {
                 method: 'GET',
                 isArray: true
             }
-        })
-    })
+        });
+    });
     // END INTERPELATION SERVICES
 
 // COUNTRY SERVICES
@@ -94,7 +94,7 @@ services.factory('CountryFactory', function($resource) {
         create: {
             method: 'POST'
         }
-    })
+    });
 });
 
 
@@ -108,7 +108,7 @@ services.factory('CustomsOfficesFactory', function($resource) {
         create: {
             method: 'POST'
         }
-    })
+    });
 });
 
 //AUTHORITIES SERVICES
@@ -121,7 +121,7 @@ services.factory('AuthoritiesFactory', function($resource) {
         create: {
             method: 'POST'
         }
-    })
+    });
 });
 
 
@@ -133,20 +133,26 @@ services.factory('EmailListFactory', function($resource) {
             method: 'GET',
             isArray: true
         }
-    })
+    });
 });
 
 services.factory('EmailImportFactory', function($resource) {
-    return $resource(baseUrl + '/editEmail/:id', {}, {
+    return $resource(baseUrl + '/editEmail/:id', {id:'@id'}, {
         query: {
             method: 'GET'
         },
         create: {
             method: 'POST'
         }
-    })
-})
-
+    });
+});
+services.factory('EmailCountFactory', function($resource){
+    return $resource(baseUrl + '/mail-count', {}, {
+      query : {
+        method: 'GET'
+      }
+    });
+});
 
 
 //ROUTES OF PROJECT
