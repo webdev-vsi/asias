@@ -29,10 +29,7 @@ services.factory('InterpelationFactory', function($resource) {
             method: 'GET'
         },
         update: {
-            method: 'PUT',
-            params: {
-                id: '@id'
-            }
+            method: 'PUT'
         },
         delete: {
             method: 'DELETE',

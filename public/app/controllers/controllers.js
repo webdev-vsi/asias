@@ -180,10 +180,10 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
 
         $scope.saveInterpelation = function(data) {
             console.log(data);
-
+            var id =  data.id;
             // actions performed after validation
             if (true) {
-                InterpelationCreateFactory.create(data);
+                InterpelationFactory.update({id:id}, data);
                 console.log("data saved");
                 return this.editMode = !this.editMode;
             } else {
