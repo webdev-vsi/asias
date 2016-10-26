@@ -6,6 +6,7 @@
     <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
     <link rel="stylesheet" media="screen" href="/css/dashboard.css">
     <link rel="stylesheet" media="screen" href="/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/css/angular-ui-notification.css">
     <link type="application/font-woff2" href="/fonts/glyphicons-halflings-regular.woff2">
 </head>
 
@@ -23,9 +24,9 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Settings <span class="glyphicon glyphicon-cog"></span> </a></li>
+                    <li><a href="#">Profile <span class="glyphicon glyphicon-user"></span></a></li>
+                    <li><a href="#/help">Help <span class="glyphicon glyphicon-question-sign"></span></a></li>
                 </ul>
 
             </div>
@@ -45,27 +46,28 @@
                     </div>
                 </div>
 
-                <label><span class="glyphicon glyphicon-envelope"></span> Registru demersurilor</label>
+                <label><span class="glyphicon glyphicon-envelope"></span> - Registru demersurilor</label>
 
                 <ul class="nav">
-                    <li class="active"><a href="#/"><span class="glyphicon glyphicon-download"></span> Intrari <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#/"><span class="glyphicon glyphicon-upload"></span> Iesiri</a></li>
+                    <li><a href="#/"><span class="glyphicon glyphicon-list-alt"></span> Toate <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#/?type=entries"><span class="glyphicon glyphicon-download"></span> Intrari <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#/?type=output"><span class="glyphicon glyphicon-upload"></span> Iesiri</a></li>
                     <li ng-controller="EmailCountCtrl"><a href="#/email-list"><span class="glyphicon glyphicon-inbox"></span> Lista email <span id="mailCount" class="badge">{{emailsCount}}</span> </a> </li>
                 </ul>
-                <label><span class="glyphicon glyphicon-folder-open"></span> Nomenclatoare</label>
+                <label><span class="glyphicon glyphicon-folder-open"></span> - Nomenclatoare</label>
                 <ul class="nav ">
                     <li><a href="/#/countries"><span class="glyphicon glyphicon-globe"></span> Tari</a></li>
-                    <li><a href="/#/customs-offices"><span class="glyphicon glyphicon-flag"></span> Birouri Vamale</a></li>
+                    <!--li><a href="/#/customs-offices"><span class="glyphicon glyphicon-flag"></span> Birouri Vamale</a></li-->
                     <li><a href="/#/subjects"><span class="glyphicon glyphicon-tags"></span> Tipuri de subiecte</a></li>
                     <li><a href="/#/authorities"><span class="glyphicon glyphicon-modal-window"></span> Autoritati</a></li>
                 </ul>
-                <label><span class="glyphicon glyphicon-folder-open"></span> Rapoarte</label>
+                <label><span class="glyphicon glyphicon-folder-open"></span> - Rapoarte</label>
                 <ul class="nav ">
-                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Generalizator pe tari</a></li>
-                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Cererile de asistenta pe autoritati</a></li>
-                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Generalizator pe tip de subiect</a></li>
-                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Generalizator pe perioada</a></li>
-                    <li><a href=""><span class="glyphicon glyphicon-listEmail-alt"></span> Dupa statutul interpelarii</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-triangle-right"></span> Generalizator pe tari</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-triangle-right"></span> Cererile de asistenta pe autoritati</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-triangle-right"></span> Generalizator pe tip de subiect</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-triangle-right"></span> Generalizator pe perioada</a></li>
+                    <li><a href=""><span class="glyphicon glyphicon-triangle-right"></span> Dupa statutul interpelarii</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main padding-zero">
@@ -138,6 +140,7 @@
     <script src="app/services/services.js"></script>
     <script src="app/controllers/controllers.js"></script>
     <script src="js/angular-bootstrap-datetimepicker-directive.min.js"></script>
+    <script src="js/angular-ui-notification.js"></script>
     <!--script>
           $('#create-interpellation').draggable();
         </script-->

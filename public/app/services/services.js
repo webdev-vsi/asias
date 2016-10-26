@@ -24,7 +24,7 @@ services.factory('InterpelationCreateFactory', function($resource) {
 });
 
 services.factory('InterpelationFactory', function($resource) {
-    return $resource(baseUrl + '/interpelations/:id', {}, {
+    return $resource(baseUrl + '/interpelationss/:id', {}, {
         show: {
             method: 'GET'
         },

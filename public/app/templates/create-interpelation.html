@@ -1,6 +1,13 @@
 <table>
     <form method="post">
         <tr>
+            <td class="col-md-6">Tip demers</td>
+            <td>
+                <select ng-init="intpl.interpelationType='INTRARE'" class="form-control" ng-model="intpl.interpelationType" ng-options="selectedInterpelationType for selectedInterpelationType  in interpelationType ">
+              </select>
+            </td>
+        </tr>
+        <tr>
             <td class="col-md-6">Prioritatea Demersului</td>
             <td>
                 <select ng-init="intpl.selectedInterpelationPriority='MEDIE'" class="form-control" ng-model="intpl.selectedInterpelationPriority" ng-options="selectedInterpelationPriority for selectedInterpelationPriority  in interpelationPriority ">
