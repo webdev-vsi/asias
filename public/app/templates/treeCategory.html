@@ -2,90 +2,90 @@
 fixing bug of clicking edit on parent and
 enabling editing on all descendents -->
 <div ng-init="editMode=false" class="panel panel-default interpelation-body">
-  <div class="panel-heading">
-    <span>  Interpelarea Nr:  {{item.interpelationNr}} </span>
-  </div>
-  <div class="panel-body">
-    <form class="form-horizontal">
-      <div ng-show="false">
-        <input type="text" ng-model="item.parentId">
-      </div>
-      <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="col-sm-6 " for="interpelationNr">Nr</label>
-          <div class="col-sm-6">
-            <p ng-hide="editMode" class="form-control-static">{{item.interpelationNr}}</p>
-            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="item.interpelationNr">
-          </div>
-        </div>
+    <div class="panel-heading">
+        <span>  Interpelarea Nr:  {{item.interpelationNr}} </span>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div ng-show="false">
+                <input type="text" ng-model="item.parentId">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-6 " for="interpelationNr">Nr. interpelare</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="editMode" class="form-control-static">{{item.interpelationNr}}</p>
+                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.interpelationNr">
+                        </div>
+                    </div>
 
-        <div class="form-group">
-          <label class=" col-sm-6" for="interpelationDate">Date</label>
-          <div class="col-sm-6">
-            <p ng-hide="editMode" class="form-control-static">{{item.interpelationDate | date: "dd-MM-yyyy"}}</p>
-            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"    ng-model="item.interpelationDate | date: 'dd-MM-yyyy' ">
-          </div>
-        </div>
+                    <div class="form-group">
+                        <label class=" col-sm-6" for="interpelationDate">Data</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="editMode" class="form-control-static">{{item.interpelationDate | date: "dd-MM-yyyy"}}</p>
+                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.interpelationDate | date: 'dd-MM-yyyy' ">
+                        </div>
+                    </div>
 
-        <div class="form-group">
-          <label class="col-sm-6" for="interpelationNr">Country</label>
-          <div class="col-sm-6">
-            <p ng-hide="editMode" class="form-control-static">{{item.country.cod}}</p>
-            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="item.country.cod">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-6" for="interpelationNr">Subject Type</label>
-          <div class="col-sm-6">
-            <p ng-hide="editMode" class="form-control-static">{{item.subjectType.subjectName}}</p>
-            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="item.subjectType">
-          </div>
-        </div>
-      </div>
-      <!--begin second col -->
-      <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-6" for="interpelationNr">Tara</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="editMode" class="form-control-static">{{item.country.countryName}}</p>
+                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.country.countryName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="interpelationNr">Subiect</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="editMode" class="form-control-static">{{item.subjectType.subjectName}}</p>
+                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.subjectType">
+                        </div>
+                    </div>
+                </div>
+                <!--begin second col -->
+                <div class="col-md-6">
 
 
-        <div class="form-group">
-          <label class="col-sm-6" for="interpelationNr">Authority</label>
-          <div class="col-sm-6">
-            <p ng-hide="editMode" class="form-control-static">{{item.authority.id}}</p>
-            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"  ng-model="item.authority.id">
-          </div>
-        </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="interpelationNr">Autoritatea</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="editMode" class="form-control-static">{{item.authority.authorityName}}</p>
+                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.authority.authorityName">
+                        </div>
+                    </div>
 
-        <div class="form-group">
-          <label class="col-sm-6" for="interpelationNr">Description</label>
-          <div class="col-sm-6">
-            <p ng-hide="editMode" class="form-control-static">{{item.description}}</p>
-            <input  ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1"   ng-model="item.description">
-          </div>
-        </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="interpelationNr">Descrierea</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="editMode" class="form-control-static">{{item.description}}</p>
+                            <textarea ng-show="editMode" class="form-control" rows="5" ng-model="item.description"></textarea>
+                        </div>
+                    </div>
 
-        <div class="form-group">
-          <label class="col-sm-6" for="interpelationNr">Mail Message</label>
-          <div class="col-sm-6">
-            <textarea ng-show="editMode" class="form-control" rows="3" ng-model="item.mailMessage"></textarea>
-          </div>
-        </div>
-      </div>
-      </div>
-      <br>
-      <!--end second col -->
-      <div class="row">
-        <div class="btn-group col-md-12 "  role="group" aria-label="...">
-          <button ng-click="editMode = !editMode" type="button" class="btn btn-default">Edit</button>
-          <button ng-click="addNode(item)" type="button" class="btn btn-primary">Create Response</button>
-          <button ng-show="editMode" class="btn btn-success" ng-click="saveInterpelation(item)">Save Interpelation</button>
-          <button ng-show="true" class="btn btn-danger" ng-click="removeItem(this)">Remove item</button>
-        </div>
-      </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="interpelationNr">Mesaj din email</label>
+                        <div class="col-sm-6">
+                            <textarea ng-show="editMode" class="form-control" rows="5" ng-model="item.mailMessage"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!--end second col -->
+            <div class="row">
+                <div class="btn-group col-md-12 " role="group" aria-label="...">
+                    <button ng-click="editMode = !editMode" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Editarea</button>
+                    <button ng-click="addNode(item)" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share"></span> Crearea raspuns</button>
+                    <button ng-show="editMode" class="btn btn-success" ng-click="saveInterpelation(item)"><span class="glyphicon glyphicon-check"></span> Salveaza</button>
+                    <button ng-show="true" class="btn btn-danger" ng-click="removeItem(this)"><span class="glyphicon glyphicon-trash"></span> Sterge</button>
+                </div>
+            </div>
 
-  </div>
+    </div>
     </form>
-  </div>
+</div>
 <ul ng-if="item.children">
-  <li ng-repeat="item in item.children" ng-include="templateTree">
-  </li>
-<uL>
+    <li ng-repeat="item in item.children" ng-include="templateTree">
+    </li>
+    <uL>

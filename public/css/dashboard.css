@@ -267,6 +267,10 @@ table, th {
     word-wrap: break-word;
 }
 
+.table-td-description {
+    width: 20%;
+}
+
 
 /* tree */
 

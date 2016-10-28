@@ -1,19 +1,19 @@
-<div>
-    <table class="table table-striped">
+<div class="panel panel-default panel-margin table-responsive">
+    <table class="table table-bordered table-striped table-hover">
         <thead>
             <!--th>ID</th-->
             <th>Tip scrisoare</th>
             <th>Numarul de intrare</th>
             <th>Data intrarii</th>
             <th>Tara</th>
-            <th>Denumirea solicitantului</th>
+            <th>Denumirea <br /> solicitantului</th>
             <th>Subiectul</th>
-            <th>Referinta de intrare
-                <br /> a solicitantului</th>
-            <th>Descrierea</th>
-            <th>Mesaju</th>
+            <!--th>Referinta de intrare
+                <br /> a solicitantului</th-->
+            <th>Detalii subiect</th>
+            <!--th>Mesaju</th-->
             <th>Prioritatea</th>
-            <th>Operatiune</th>
+            <th><span class="glyphicon glyphicon-edit"></span></th>
         </thead>
         <tbody>
             <!--tr ng-repeat="interpelation in tree">
@@ -70,12 +70,12 @@
                 <td>{{interpelation.interpelationType }}</td>
                 <td>{{interpelation.interpelationNr }}</td>
                 <td>{{interpelation.interpelationDate | date:'dd-MM-yyyy'}}</td>
-                <td>{{interpelation.country.countryName}}</td>
+                <td>{{interpelation.country.countryCod3}}</td>
                 <td>{{interpelation.authority.authorityName}}</td>
                 <td>{{interpelation.subjectType.subjectName}}</td>
-                <td>{{interpelation.authorityInterpelationNr}}</td>
-                <td>{{interpelation.description}}</td>
-                <td>{{interpelation.mailMessage.content}}</td>
+                <!--td>{{interpelation.authorityInterpelationNr}}</td-->
+                <td class="table-td-description">{{interpelation.description}}</td>
+                <!--td>{{interpelation.mailMessage.content}}</td-->
                 <td>
                     <span ng-class="{'priority-low': interpelation.interpelationPriority == 'SCAZUTA',
                           'priority-middle': interpelation.interpelationPriority == 'MEDIE',
@@ -83,7 +83,7 @@
                           {{interpelation.interpelationPriority}}
                     </span>
                 </td>
-                <td><a ng-click="editIntpl(interpelation.id)">Editare</a></td>
+                <td><a ng-click="editIntpl(interpelation.id)"><span class="glyphicon glyphicon-edit">&nbsp</span></a></td>
             </tr>
         </tbody>
     </table>

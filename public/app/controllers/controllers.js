@@ -438,6 +438,7 @@ app.controller('EmailImportCtrl', ['$scope',
     'InterpelationPriorityFactory',
     'AuthoritiesFactory',
     '$filter',
+    'Notification',
 
     function($scope,
         $rootScope,
@@ -452,7 +453,8 @@ app.controller('EmailImportCtrl', ['$scope',
         InterpelationTypeFactory,
         InterpelationPriorityFactory,
         AuthoritiesFactory,
-        $filter) {
+        $filter,
+        Notification) {
 
 
         $scope.countries = CountryFactory.query();
@@ -528,6 +530,7 @@ app.controller('EmailImportCtrl', ['$scope',
             //var intplObjectPretty = angular.toJson(intplObject);
             //console.log(intplObjectPretty);
             //EmailImportFactory.create({id:id},$scope.intpl);
+            Notification("Mesajul a fost importat");
         };
 
     }

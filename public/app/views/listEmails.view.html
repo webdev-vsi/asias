@@ -1,45 +1,46 @@
 <nav class="navbar navbar-default navbar-static-top asias-navbar">
-    <label>Lista Emailuri</label>
-    <a ng-click="markAsProcessed()">Proccess Message</a>
+    <label><span class="glyphicon glyphicon-list"></span> Lista Emailuri</label>
+    <!--a ng-click="markAsProcessed()">Proccess Message</a-->
 </nav>
+<div class="panel panel-default panel-margin table-responsive">
+    <div ng-controller="EmailListCtrl">
+        <table class="table table-bordered table-width-fix">
+            <thead>
+                <!--th>ID</th-->
+                <th>De la</th>
+                <th>Data</th>
+                <th>Raspunde la</th>
+                <th>Catre</th>
+                <th>Subiectul</th>
+                <th>Continut</th>
+                <th>Actiune</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="email in listEmails">
+                    <td>
+                        {{email.from}}
+                    </td>
+                    <td>
+                        {{email.sentDate | date:'dd-MM-yyyy'}}
+                    </td>
 
-<div ng-controller="EmailListCtrl">
-    <table class="table  table-width-fix">
-        <thead>
-            <!--th>ID</th-->
-            <th>De la</th>
-            <th>Data</th>
-            <th>Raspunde la</th>
-            <th>Catre</th>
-            <th>Subiectul</th>
-            <th>Continut</th>
-            <th>Action</th>
-        </thead>
-        <tbody>
-            <tr ng-repeat="email in listEmails">
-                <td>
-                    {{email.from}}
-                </td>
-                <td>
-                    {{email.sentDate | date:'dd-MM-yyyy'}}
-                </td>
-
-                <td>
-                    {{email.replyTo}}
-                </td>
-                <td>
-                    {{email.to}}
-                </td>
-                <td>
-                    {{email.subject}}
-                </td>
-                <td>
-                    {{email.content | htmlToPlaintext}}
-                </td>
-                <td>
-                    <a ng-click="importEmail(email.messageId)">Import Message</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    <td>
+                        {{email.replyTo}}
+                    </td>
+                    <td>
+                        {{email.to}}
+                    </td>
+                    <td>
+                        {{email.subject}}
+                    </td>
+                    <td>
+                        {{email.content | htmlToPlaintext}}
+                    </td>
+                    <td>
+                        <a ng-click="importEmail(email.messageId)"> <span class="glyphicon glyphicon-share"></span> Import mesaj</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
