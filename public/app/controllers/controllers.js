@@ -147,9 +147,12 @@ app.controller('IntplListCtrl', ['$scope',
     }
 ]);
 
-app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'InterpelationFactory', 'InterpelationTreeFactory', 'InterpelationCreateFactory', '$location',
-    function($scope, $rootScope, $routeParams, InterpelationFactory, InterpelationTreeFactory, InterpelationCreateFactory, $location) {
+app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'InterpelationFactory', 'InterpelationTreeFactory', 'InterpelationCreateFactory', 'CountryFactory', 'InterpelationSubjectFactory', 'AuthoritiesFactory', '$location',
+    function($scope, $rootScope, $routeParams, InterpelationFactory, InterpelationTreeFactory, InterpelationCreateFactory, CountryFactory, InterpelationSubjectFactory, AuthoritiesFactory, $location) {
 
+        $scope.countries = CountryFactory.query();
+        $scope.subjects = InterpelationSubjectFactory.query();
+        $scope.authorities = AuthoritiesFactory.query();
         /* callback for ng-click 'updateUser': */
         $scope.updateIntpl = function() {
             InterpelationFactory.update($scope.intpl);
@@ -379,16 +382,16 @@ app.controller('AuthoritiesCtrl', ['$scope',
 ]);
 app.controller('EmailCountCtrl', ['$scope', '$http', 'EmailCountFactory', 'EmailListFactory', function($scope, $http, EmailCountFactory, EmailListFactory) {
     $scope.emailsCount = "";
-    //$http.get("http://localhost:8080/mail-count")
-    //    .then(function(response) {
-    //        $scope.emailsCount = response.data;
-    //console.log($scope.myWelcome);
-    //    });
-    //  var emaillength = EmailListFactory.query();
-    //  console.log(emaillength);
-    //  $scope.emailsCount  = emaillength.length;
+    $http.get("http://localhost:8080/mail-count")
+        .then(function(response) {
+            $scope.emailsCount = response.data;
+            //console.log($scope.myWelcome);
+        });
+    var emaillength = EmailCountFactory.query();
+    console.log(emaillength);
+    //$scope.emailsCount = emaillength.length;
     //$scope.emailsCount = length.length();
-    //$scope.emailsCount  = EmailCountFactory.query();
+    //$scope.emailsCount = EmailCountFactory.query();
 }]);
 app.controller('EmailListCtrl', ['$scope', '$http', 'EmailListFactory', '$location', 'EmailImportFactory',
     function($scope, $http, EmailListFactory, $location, EmailImportFactory) {

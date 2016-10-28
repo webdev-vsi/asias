@@ -24,7 +24,13 @@ enabling editing on all descendents -->
                         <label class=" col-sm-6" for="interpelationDate">Data</label>
                         <div class="col-sm-6">
                             <p ng-hide="editMode" class="form-control-static">{{item.interpelationDate | date: "dd-MM-yyyy"}}</p>
-                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.interpelationDate | date: 'dd-MM-yyyy' ">
+                            <div ng-show="editMode" class='input-group date' id='datetimepicker1'>
+                                <input ng-init="null" datetimepicker name="interpelationDate" ng-model="item.interpelationDate | date: 'dd-MM-yyyy'" type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <!--input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.interpelationDate | date: 'dd-MM-yyyy' "-->
                         </div>
                     </div>
 
@@ -85,7 +91,7 @@ enabling editing on all descendents -->
     </div>
     </form>
 </div>
-<ul ng-if="item.children">
+<ul class="tree" ng-if="item.children">
     <li ng-repeat="item in item.children" ng-include="templateTree">
     </li>
     <uL>

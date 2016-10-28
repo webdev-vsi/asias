@@ -1,5 +1,28 @@
-<div class="panel panel-default panel-margin table-responsive">
-    <table class="table table-bordered table-striped table-hover">
+<div ng-init="searchForm = false" class="panel panel-default panel-margin table-responsive">
+    <div class="panel-heading">
+        <label ng-click="searchForm =! searchForm"><span class="glyphicon glyphicon-search"></span> Cautare</label>
+        <div class=" row " ng-show="searchForm ">
+            <div class="col-sm-3 ">
+                <div class="input-group ">
+                    <span class="input-group-addon ">Nr. interpelare: </span>
+                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.interpelationNr" />
+                </div>
+            </div>
+            <div class="col-sm-3 ">
+                <div class="input-group ">
+                    <span class="input-group-addon ">Subiectul: </span>
+                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.subjectType.subjectName" />
+                </div>
+            </div>
+            <div class="col-sm-3 ">
+                <div class="input-group ">
+                    <span class="input-group-addon ">Detalii: </span>
+                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.description" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped table-hover ">
         <thead>
             <!--th>ID</th-->
             <th>Tip scrisoare</th>
@@ -13,59 +36,10 @@
             <th>Detalii subiect</th>
             <!--th>Mesaju</th-->
             <th>Prioritatea</th>
-            <th><span class="glyphicon glyphicon-edit"></span></th>
+            <th><span class="glyphicon glyphicon-edit "></span></th>
         </thead>
         <tbody>
-            <!--tr ng-repeat="interpelation in tree">
-        <td>{{interpelation.id}}</td>
-        <td>{{interpelation.interpelationNr}}</td>
-        <td>{{interpelation.interpelationDate | date:'dd-MM-yyyy'}}</td>
-        <td>{{interpelation.country.countryName}}</td>
-        <td>{{interpelation.customsOffice.namePost}}</td>
-        <td>{{interpelation.subjectType.subjectName}}</td>
-        <td>{{interpelation.authority.authorityName}}</td>
-        <td>{{interpelation.description}}</td>
-        <td>{{interpelation.mailMessage}}</td>
-        <td><a ng-click="editIntpl(interpelation.id)">Edit</a></td>
-      </tr-->
-
-            <!--ul ng-repeat="interpelation in tree">
-        <li>{{interpelation.id}}</li>
-        <li>{{interpelation.interpelationNr}}</li>
-        <li>{{interpelation.interpelationDate | date:'dd-MM-yyyy'}}</li>
-        <li>{{interpelation.country.countryName}}</li>
-        <li>{{interpelation.customsOffice.namePost}}</li>
-        <li>{{interpelation.subjectType.subjectName}}</li>
-        <li>{{interpelation.authority.authorityName}}</li>
-        <li>{{interpelation.description}}</li>
-        <li>{{interpelation.mailMessage}}</li>
-        <ul ng-repeat="child in interpelation.children">
-          <li>{{child.id}}</li>
-          <li>{{child.interpelationNr}}</li>
-          <li>{{child.interpelationDate | date:'dd-MM-yyyy'}}</li>
-          <li>{{child.country.countryName}}</li>
-          <li>{{child.customsOffice.namePost}}</li>
-          <li>{{child.subjectType.subjectName}}</li>
-          <li>{{child.authority.authorityName}}</li>
-          <li>{{child.description}}</li>
-          <li>{{child.mailMessage}}</li>
-        </ul>
-        <ul ng-repeat="child2 in child.children">
-          <li>{{child2.id}}</li>
-          <li>{{child2.interpelationNr}}</li>
-          <li>{{child2.interpelationDate | date:'dd-MM-yyyy'}}</li>
-          <li>{{child2.country.countryName}}</li>
-          <li>{{child2.customsOffice.namePost}}</li>
-          <li>{{child2.subjectType.subjectName}}</li>
-          <li>{{child2.authority.authorityName}}</li>
-          <li>{{child2.description}}</li>
-          <li>{{child2.mailMessage}}</li>
-        </ul>
-      </ul-->
-
-
-
-            <tr ng-repeat="interpelation in interpelations | orderBy: '-interpelationNr'">
+            <tr ng-repeat="interpelation in interpelations | filter:search:strinct | orderBy: '-interpelationDate' ">
                 <!--td>{{interpelation.id}}</td-->
                 <td>{{interpelation.interpelationType }}</td>
                 <td>{{interpelation.interpelationNr }}</td>
@@ -74,16 +48,14 @@
                 <td>{{interpelation.authority.authorityName}}</td>
                 <td>{{interpelation.subjectType.subjectName}}</td>
                 <!--td>{{interpelation.authorityInterpelationNr}}</td-->
-                <td class="table-td-description">{{interpelation.description}}</td>
+                <td class="table-td-description ">{{interpelation.description}}</td>
                 <!--td>{{interpelation.mailMessage.content}}</td-->
                 <td>
-                    <span ng-class="{'priority-low': interpelation.interpelationPriority == 'SCAZUTA',
-                          'priority-middle': interpelation.interpelationPriority == 'MEDIE',
-                          'priority-high': interpelation.interpelationPriority == 'RIDICATA',}">
+                    <span ng-class="{ 'priority-low': interpelation.interpelationPriority=='SCAZUTA' , 'priority-middle': interpelation.interpelationPriority=='MEDIE' , 'priority-high': interpelation.interpelationPriority=='RIDICATA' ,} ">
                           {{interpelation.interpelationPriority}}
                     </span>
                 </td>
-                <td><a ng-click="editIntpl(interpelation.id)"><span class="glyphicon glyphicon-edit">&nbsp</span></a></td>
+                <td><a ng-click="editIntpl(interpelation.id) "><span class="glyphicon glyphicon-edit ">&nbsp</span></a></td>
             </tr>
         </tbody>
     </table>
