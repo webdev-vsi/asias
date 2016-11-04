@@ -3,7 +3,7 @@ fixing bug of clicking edit on parent and
 enabling editing on all descendents -->
 <div ng-init="editMode=false" class="panel panel-default interpelation-body">
     <div class="panel-heading">
-        <span>  Interpelarea Nr:  {{item.interpelationNr}} </span>
+        <span>  Interpelarea Nr:  {{item.interpelationNr}}</span>
     </div>
     <div class="panel-body">
         <form class="form-horizontal">
@@ -15,17 +15,17 @@ enabling editing on all descendents -->
                     <div class="form-group">
                         <label class="col-sm-6 " for="interpelationNr">Nr. interpelare</label>
                         <div class="col-sm-6">
-                            <p ng-hide="editMode" class="form-control-static">{{item.interpelationNr}}</p>
-                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.interpelationNr">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationNr}}</p>
+                            <input ng-show="item.editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.interpelationNr">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class=" col-sm-6" for="interpelationDate">Data</label>
                         <div class="col-sm-6">
-                            <p ng-hide="editMode" class="form-control-static">{{item.interpelationDate | date: "dd-MM-yyyy"}}</p>
-                            <div ng-show="editMode" class='input-group date' id='datetimepicker1'>
-                                <input ng-init="null" datetimepicker name="interpelationDate" ng-model="item.interpelationDate | date: 'dd-MM-yyyy'" type='text' class="form-control" />
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationDate | date: "dd-MM-yyyy"}}</p>
+                            <div ng-show="item.editMode" class='input-group date' id='datetimepicker1'>
+                                <input ng-init="null" datetimepicker name="interpelationDate" ng-model="item.interpelationDate" type='text' class="form-control" />
                                 <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -37,42 +37,46 @@ enabling editing on all descendents -->
                     <div class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Tara</label>
                         <div class="col-sm-6">
-                            <p ng-hide="editMode" class="form-control-static">{{item.country.countryName}}</p>
-                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.country.countryName">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.country.countryName}}</p>
+                            <!--input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.country.countryName"-->
+                            <select ng-init="item.selectedCountry=item.country.cod" ng-show="item.editMode" class="form-control" ng-model="item.selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Subiect</label>
                         <div class="col-sm-6">
-                            <p ng-hide="editMode" class="form-control-static">{{item.subjectType.subjectName}}</p>
-                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.subjectType">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.subjectType.subjectName}}</p>
+                            <!--input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.subjectType.id"-->
+                            <select ng-init="item.selectedSubjectType=item.subjectType.id" ng-show="item.editMode" class="form-control" ng-model="item.selectedSubjectType" ng-options="selectedSubjectType.id as selectedSubjectType.subjectName for selectedSubjectType in subjectTypes | orderBy:'subjectName'">
+                            </select>
                         </div>
                     </div>
                 </div>
                 <!--begin second col -->
                 <div class="col-md-6">
-
-
                     <div class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Autoritatea</label>
                         <div class="col-sm-6">
-                            <p ng-hide="editMode" class="form-control-static">{{item.authority.authorityName}}</p>
-                            <input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.authority.authorityName">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.authority.authorityName}}</p>
+                            <!--input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.authority.authorityName"-->
+                            <select ng-show="item.editMode" ng-init="item.selectedAuthoritie=item.authority.id" class="form-control" ng-model="item.selectedAuthoritie" ng-options="selectedAuthoritie.id as selectedAuthoritie.authorityName for selectedAuthoritie in authorities | orderBy:'authorityName'">
+                            </select>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Descrierea</label>
                         <div class="col-sm-6">
-                            <p ng-hide="editMode" class="form-control-static">{{item.description}}</p>
-                            <textarea ng-show="editMode" class="form-control" rows="5" ng-model="item.description"></textarea>
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.description}}</p>
+                            <textarea ng-show="item.editMode" class="form-control" rows="5" ng-model="item.description"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Mesaj din email</label>
                         <div class="col-sm-6">
-                            <textarea ng-show="editMode" class="form-control" rows="5" ng-model="item.mailMessage"></textarea>
+                            <textarea ng-show="item.editMode" class="form-control" rows="5" ng-model="item.mailMessage"></textarea>
                         </div>
                     </div>
                 </div>
@@ -81,9 +85,9 @@ enabling editing on all descendents -->
             <!--end second col -->
             <div class="row">
                 <div class="btn-group col-md-12 " role="group" aria-label="...">
-                    <button ng-click="editMode = !editMode" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Editarea</button>
+                    <button ng-click="editNode(); item.editMode = !item.editMode" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Editarea</button>
                     <button ng-click="addNode(item)" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share"></span> Crearea raspuns</button>
-                    <button ng-show="editMode" class="btn btn-success" ng-click="saveInterpelation(item)"><span class="glyphicon glyphicon-check"></span> Salveaza</button>
+                    <button ng-show="item.editMode" class="btn btn-success" ng-click="saveInterpelation(item)"><span class="glyphicon glyphicon-check"></span> Salveaza</button>
                     <button ng-show="true" class="btn btn-danger" ng-click="removeItem(this)"><span class="glyphicon glyphicon-trash"></span> Sterge</button>
                 </div>
             </div>
@@ -91,7 +95,7 @@ enabling editing on all descendents -->
     </div>
     </form>
 </div>
-<ul class="tree" ng-if="item.children">
+<ul ng-if="item.children">
     <li ng-repeat="item in item.children" ng-include="templateTree">
     </li>
     <uL>

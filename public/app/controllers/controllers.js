@@ -147,12 +147,23 @@ app.controller('IntplListCtrl', ['$scope',
     }
 ]);
 
-app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'InterpelationFactory', 'InterpelationTreeFactory', 'InterpelationCreateFactory', 'CountryFactory', 'InterpelationSubjectFactory', 'AuthoritiesFactory', '$location',
-    function($scope, $rootScope, $routeParams, InterpelationFactory, InterpelationTreeFactory, InterpelationCreateFactory, CountryFactory, InterpelationSubjectFactory, AuthoritiesFactory, $location) {
+app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'InterpelationFactory', 'InterpelationTreeFactory', 'InterpelationCreateFactory', 'CountryFactory', 'InterpelationSubjectFactory', 'AuthoritiesFactory', '$location', 'Notification', 'moment',
+    function($scope, $rootScope, $routeParams, InterpelationFactory, InterpelationTreeFactory, InterpelationCreateFactory, CountryFactory, InterpelationSubjectFactory, AuthoritiesFactory, $location, Notification, moment) {
+
+        console.log($scope.exampleDate);
+        //root element id
+        $scope.rootId = $routeParams.id;
 
         $scope.countries = CountryFactory.query();
-        $scope.subjects = InterpelationSubjectFactory.query();
+        $scope.selectedCountry = $scope.countries[0];
+
+
+        $scope.subjectTypes = InterpelationSubjectFactory.query();
+        $scope.selectedSubjectType = $scope.subjectTypes[0];
+
         $scope.authorities = AuthoritiesFactory.query();
+        $scope.selectedAuthoritie = $scope.authorities[0];
+
         /* callback for ng-click 'updateUser': */
         $scope.updateIntpl = function() {
             InterpelationFactory.update($scope.intpl);
@@ -166,17 +177,35 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
         $scope.tree = InterpelationTreeFactory.query({
             id: $routeParams.id
         });
+        //reformat interpelationDate from timeStamp to dd-MM-yyyy
+
         //  $scope.intpl = InterpelationFactory.show({id: $routeParams.id});
         $scope.templateTree = 'app/templates/treeCategory.html';
 
-        $scope.removeItem = function(item) {
+        //variable for editMode
+        var dateTransform;
+        $scope.editNode = function() {
+            // executes only once transforming interpelationDate to suit the datePicker from timestam to DD-MM-YYYY
+            if (!dateTransform) {
+                dateTransform = true;
+                $scope.tree.map(function(obj) {
+                    if (obj.hasOwnProperty('interpelationDate')) {
+                        //console.log(obj['interpelationDate']);
+                        obj['interpelationDate'] = moment(obj['interpelationDate']).format("DD-MM-YYYY");
+                        //console.log(obj['interpelationDate']);
+                    }
+                });
 
+            }
+        };
+
+
+        $scope.removeItem = function(item) {
             //var index = $scope.tree.indexOf(item);
             //$scope.tree.splice(15,1);
             //console.log(JSON.stringify($scope.tree));
-            console.log(item);
-        }
 
+        };
         $scope.addNode = function(data) {
             // TODO when create new child set editMode to true;
             if (data.children === null) {
@@ -185,19 +214,75 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
             data.children.push({
                 id: 1,
                 parentId: data.id,
-                children: []
+                children: [],
+                editMode: true
             });
             $scope.newResponse = {
-                parentId: data.id
+                parentId: data.id,
+                interpelationNr: 3453453453,
+                interpelationType: "IESIRE",
+                interpelationPriority: "RIDICATA",
+                interpelationDate: 1477353600000,
+                executionDate: null,
+                country: {
+                    "cod": 498
+                },
+                customsOffice: null,
+                subjectType: {
+                    "id": 76
+                },
+                subjectTypeOptional: null,
+                authority: {
+                    "id": 1
+                },
+                applicantInterpelationDate: null,
+                description: "gdgfdgfdgfdgd",
+                mailMessage: null
             };
-            //this.editMode = true;
-            //InterpelationCreateFactory.create($scope.newResponse);
+            console.log($scope.newResponse);
         };
+
+        //this.editMode = true;
+        //InterpelationCreateFactory.create($scope.newResponse);
+
 
 
         $scope.saveInterpelation = function(data) {
+            //  var timeStampDate = moment(data.interpelationDate, "dd-MM-yyyy").valueOf();
+            $scope.newResponse = {
+                parentId: data.parentId,
+                interpelationNr: data.interpelationNr,
+                interpelationType: data.interpelationType,
+                interpelationPriority: "RIDICATA",
+                interpelationDate: data.interpelationDate,
+                executionDate: null,
+                country: {
+                    "cod": data.selectedCountry
+                },
+                customsOffice: null,
+                subjectType: {
+                    "id": data.selectedSubjectType
+                },
+                subjectTypeOptional: null,
+                authority: {
+                    "id": data.selectedAuthoritie
+                },
+                applicantInterpelationDate: null,
+                description: data.description,
+                mailMessage: null
+
+            };
             console.log(data);
-            var id = data.id;
+
+            //  InterpelationCreateFactory.create($scope.newResponse);
+            //update the tree after interpelation creation
+            //  $scope.tree = InterpelationTreeFactory.query({
+            //      id: $routeParams.id
+            //  });
+            Notification.success("A fost adaugata interpelarea " + $scope.newResponse.interpelationNr);
+            //resetam newResponse
+            //  $scope.newResponse = {};
+            //  var id = data.id;
             // actions performed after validation
             /*  if (true) {
                   InterpelationFactory.update({
@@ -208,11 +293,7 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
               } else {
                   console.log("something went wrong!");
               }*/
-
         };
-
-
-
     }
 ]);
 app.controller('IntplCreateCtrl', ['$scope',
@@ -324,8 +405,10 @@ app.controller('IntplCreateCtrl', ['$scope',
             //console.log($scope.intpl.interpelationDate);
             //console.log($scope.intpl.country);
             $scope.intpl.interpelationDate = $scope.intpl.interpelationDateInitialACSV;
+
+
             // Interpelation Creation from Factory
-            InterpelationCreateFactory.create($scope.intpl);
+            //InterpelationCreateFactory.create($scope.intpl);
             Notification.success("Interpelarea Nr: " + $scope.intpl.interpelationNr + " a fost adaugata");
             console.log($scope.intpl);
 
@@ -334,7 +417,7 @@ app.controller('IntplCreateCtrl', ['$scope',
 
             //Clearing  all values for next interpelation
             $scope.intpl = '';
-            $location.path('/intpl-list');
+            //  $location.path('/intpl-list');
 
 
         }

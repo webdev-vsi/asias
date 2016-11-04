@@ -6,7 +6,8 @@ angular.module('ngAsiasApp', [
         'ngAsiasApp.services',
         'ngAsiasApp.controllers',
         'datetimepicker',
-        'ui-notification'
+        'ui-notification',
+        'angularMoment'
     ])
     .filter('htmlToPlaintext', function() {
         return function(text) {
