@@ -426,9 +426,32 @@ app.controller('IntplCreateCtrl', ['$scope',
             $timeout(function() {
                 InterpelationSubjectFactory.query(function(response) {
                     $scope.subjectTypes = response;
-                })
+                });
             }, 500);
-        }
+        };
+
+        //add authority inside create-interpelation
+        $scope.addAuthority = function(authority) {
+            var newAuthority = {
+                "authorityType": $scope.authorityType,
+                "authorityName": $scope.authorityName,
+                "country": {
+                    "cod": $scope.selectedCountry
+                }
+            };
+            //console.log(newAuthority);
+            AuthoritiesFactory.create(newAuthority);
+            $scope.hideAuthorityForm = true;
+            $scope.authorityName = '';
+
+            $timeout(function() {
+                AuthoritiesFactory.query(function(response) {
+                    $scope.authorities = response;
+                });
+            }, 500);
+        };
+
+
 
         $scope.refresh = function() {
                 InterpelationSubjectFactory.query(function(response) {

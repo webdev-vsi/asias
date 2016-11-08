@@ -50,15 +50,15 @@
                     <form>
                         <div class="form-group">
                             <label for="authorityName">Denumire Autoritate</label>
-                            <input type="text" class="form-control" id="authorityName" placeholder="Denumire">
+                            <input ng-model="authorityName" type="text" class="form-control" id="authorityName" placeholder="Denumire">
                         </div>
                         <div class="form-group">
                             <label for="authorityType">Tip Autoritate</label>
-                            <select class="form-control">
-                                <option>
+                            <select class="form-control" ng-model="authorityType">
+                                <option value="INTERN">
                                     INTERN
                                 </option>
-                                <option>
+                                <option value="EXTERN">
                                     EXTERN
                                 </option>
                             </select>
