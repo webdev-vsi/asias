@@ -1,11 +1,13 @@
 <!-- use ng-init to set editMode to false,
 fixing bug of clicking edit on parent and
 enabling editing on all descendents -->
-<div ng-init="editMode=false" class="panel panel-default interpelation-body">
-    <div class="panel-heading">
-        <span>  Interpelarea Nr:  {{item.interpelationNr}}</span>
+<div class="panel panel-default interpelation-body">
+    <div ng-click="item.showBody =! item.showBody" class="panel-heading">
+        <span>  Interpelarea Nr:  {{item.interpelationNr}} ;</span>
+        <span>  Autoritatea:  {{item.authority.authorityName}} ;</span>
+        <span>  Descrirerea: {{item.description}};</span>
     </div>
-    <div class="panel-body">
+    <div ng-show="item.showBody" class="panel-body">
         <form class="form-horizontal">
             <div ng-show="false">
                 <input type="text" ng-model="item.parentId">
@@ -23,7 +25,7 @@ enabling editing on all descendents -->
                     <div class="form-group">
                         <label class=" col-sm-6" for="interpelationDate">Data</label>
                         <div class="col-sm-6">
-                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationDate | date: "dd-MM-yyyy"}}</p>
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationDate | date: 'dd-MM-yyyy'}}</p>
                             <div ng-show="item.editMode" class='input-group date' id='datetimepicker1'>
                                 <input ng-init="null" datetimepicker name="interpelationDate" ng-model="item.interpelationDate" type='text' class="form-control" />
                                 <span class="input-group-addon">
@@ -85,10 +87,10 @@ enabling editing on all descendents -->
             <!--end second col -->
             <div class="row">
                 <div class="btn-group col-md-12 " role="group" aria-label="...">
-                    <button ng-click="editNode(); item.editMode = !item.editMode" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Editarea</button>
+                    <button ng-click="editNode(item); item.editMode = !item.editMode" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Editarea</button>
                     <button ng-click="addNode(item)" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share"></span> Crearea raspuns</button>
                     <button ng-show="item.editMode" class="btn btn-success" ng-click="saveInterpelation(item)"><span class="glyphicon glyphicon-check"></span> Salveaza</button>
-                    <button ng-show="true" class="btn btn-danger" ng-click="removeItem(this)"><span class="glyphicon glyphicon-trash"></span> Sterge</button>
+                    <button ng-show="true" class="btn btn-danger" ng-click="removeItem(item)"><span class="glyphicon glyphicon-trash"></span> Sterge</button>
                 </div>
             </div>
 

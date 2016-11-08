@@ -16,15 +16,21 @@ services.factory('InterpelationsFactory', function($resource) {
 });
 
 services.factory('InterpelationCreateFactory', function($resource) {
-    return $resource(baseUrl + '/interpelation/1', {}, {
+    return $resource(baseUrl + '/interpelation', {}, {
         create: {
             method: 'POST'
+        },
+        delete: {
+            method: "DELETE"
+        },
+        update: {
+            method: 'PUT'
         }
     });
 });
 
 services.factory('InterpelationFactory', function($resource) {
-    return $resource(baseUrl + '/interpelationss/:id', {}, {
+    return $resource(baseUrl + '/interpelation', {}, {
         show: {
             method: 'GET'
         },
@@ -72,14 +78,14 @@ services.factory('InterpelationPriorityFactory', function($resource) {
 });
 
 services.factory('InterpelationTreeFactory', function($resource) {
-        return $resource(baseUrl + '/interpelation-tree/:id', {}, {
-            query: {
-                method: 'GET',
-                isArray: true
-            }
-        });
+    return $resource(baseUrl + '/interpelation-tree/:id', {}, {
+        query: {
+            method: 'GET',
+            isArray: true
+        }
     });
-    // END INTERPELATION SERVICES
+});
+// END INTERPELATION SERVICES
 
 // COUNTRY SERVICES
 services.factory('CountryFactory', function($resource) {
@@ -134,7 +140,9 @@ services.factory('EmailListFactory', function($resource) {
 });
 
 services.factory('EmailImportFactory', function($resource) {
-    return $resource(baseUrl + '/editEmail/:id', {id:'@id'}, {
+    return $resource(baseUrl + '/editEmail/:id', {
+        id: '@id'
+    }, {
         query: {
             method: 'GET'
         },
@@ -143,11 +151,11 @@ services.factory('EmailImportFactory', function($resource) {
         }
     });
 });
-services.factory('EmailCountFactory', function($resource){
+services.factory('EmailCountFactory', function($resource) {
     return $resource(baseUrl + '/mail-count', {}, {
-      query : {
-        method: 'GET'
-      }
+        query: {
+            method: 'GET'
+        }
     });
 });
 

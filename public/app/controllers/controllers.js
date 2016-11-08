@@ -147,8 +147,8 @@ app.controller('IntplListCtrl', ['$scope',
     }
 ]);
 
-app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'InterpelationFactory', 'InterpelationTreeFactory', 'InterpelationCreateFactory', 'CountryFactory', 'InterpelationSubjectFactory', 'AuthoritiesFactory', '$location', 'Notification', 'moment',
-    function($scope, $rootScope, $routeParams, InterpelationFactory, InterpelationTreeFactory, InterpelationCreateFactory, CountryFactory, InterpelationSubjectFactory, AuthoritiesFactory, $location, Notification, moment) {
+app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParams', 'InterpelationFactory', 'InterpelationTreeFactory', 'InterpelationCreateFactory', 'CountryFactory', 'InterpelationSubjectFactory', 'AuthoritiesFactory', '$location', 'Notification', 'moment',
+    function($http, $scope, $rootScope, $routeParams, InterpelationFactory, InterpelationTreeFactory, InterpelationCreateFactory, CountryFactory, InterpelationSubjectFactory, AuthoritiesFactory, $location, Notification, moment) {
 
         console.log($scope.exampleDate);
         //root element id
@@ -174,9 +174,25 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
         $scope.cancel = function() {
             $location.path('/user-list');
         };
+        //  $scope.tree = InterpelationTreeFactory.query({
+        //      id: $routeParams.id,
+
+        //  });
+
         $scope.tree = InterpelationTreeFactory.query({
-            id: $routeParams.id
-        });
+                id: $routeParams.id
+            },
+            function(data) {
+
+                console.log(data);
+
+                console.log("Succces query");
+            },
+            function() {
+                console.log("error query");
+            }
+        );
+
         //reformat interpelationDate from timeStamp to dd-MM-yyyy
 
         //  $scope.intpl = InterpelationFactory.show({id: $routeParams.id});
@@ -184,27 +200,53 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
 
         //variable for editMode
         var dateTransform;
-        $scope.editNode = function() {
-            // executes only once transforming interpelationDate to suit the datePicker from timestam to DD-MM-YYYY
+        $scope.editNode = function(item) {
+            //hack for displaying correct date format in datePicker and convert to timestamp
             if (!dateTransform) {
                 dateTransform = true;
-                $scope.tree.map(function(obj) {
-                    if (obj.hasOwnProperty('interpelationDate')) {
-                        //console.log(obj['interpelationDate']);
-                        obj['interpelationDate'] = moment(obj['interpelationDate']).format("DD-MM-YYYY");
-                        //console.log(obj['interpelationDate']);
-                    }
-                });
-
+                //console.log("edit- " + item.interpelationDate);
+                item.interpelationDate = moment(item.interpelationDate).format("DD-MM-YYYY");
+                //console.log("edit- " + item.interpelationDate);
+            } else {
+                dateTransform = false;
+                //console.log(item.interpelationDate);
+                item.interpelationDate = moment(item.interpelationDate, "DD-MM-YYYY").valueOf();
+                //console.log(item.interpelationDate);
             }
         };
 
-
+        var canDelete = function(item) {
+            if (item.children === null) {
+                return true;
+            }
+            return false;
+        };
         $scope.removeItem = function(item) {
-            //var index = $scope.tree.indexOf(item);
-            //$scope.tree.splice(15,1);
-            //console.log(JSON.stringify($scope.tree));
-
+            //console.log(item.children.length);
+            var itemToRemove = {
+                id: item.id,
+            };
+            //using canDelete method
+            if (canDelete(item)) {
+                // using http method because $resource method doesnt work with DELETE
+                $http({
+                    url: 'http://localhost:8080/interpelation',
+                    method: 'DELETE',
+                    data: itemToRemove,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    }
+                }).then(function(res) {
+                    Notification.success("Interpelarea a fost stearsa!");
+                    $scope.tree = InterpelationTreeFactory.query({
+                        id: $routeParams.id
+                    });
+                }, function(error) {
+                    Notification.error(error);
+                });
+            } else {
+                Notification.error("Nu se permite stergerea interpelarii initiale");
+            }
         };
         $scope.addNode = function(data) {
             // TODO when create new child set editMode to true;
@@ -212,49 +254,54 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
                 data.children = [];
             }
             data.children.push({
-                id: 1,
+                //  id: 1,
                 parentId: data.id,
                 children: [],
-                editMode: true
+                editMode: true,
+                showBody: true
             });
             $scope.newResponse = {
-                parentId: data.id,
-                interpelationNr: 3453453453,
-                interpelationType: "IESIRE",
-                interpelationPriority: "RIDICATA",
-                interpelationDate: 1477353600000,
-                executionDate: null,
-                country: {
-                    "cod": 498
-                },
-                customsOffice: null,
-                subjectType: {
-                    "id": 76
-                },
-                subjectTypeOptional: null,
-                authority: {
-                    "id": 1
-                },
-                applicantInterpelationDate: null,
-                description: "gdgfdgfdgfdgd",
-                mailMessage: null
+                parentId: data.id
+                    /*        interpelationNr: 3453453453,
+                            interpelationType: "IESIRE",
+                            interpelationPriority: "RIDICATA",
+                            interpelationDate: 1477353600000,
+                            executionDate: null,
+                            country: {
+                                "cod": 498
+                            },
+                            customsOffice: null,
+                            subjectType: {
+                                "id": 76
+                            },
+                            subjectTypeOptional: null,
+                            authority: {
+                                "id": 1
+                            },
+                            applicantInterpelationDate: null,
+                            description: "gdgfdgfdgfdgd",
+                            mailMessage: null */
             };
-            console.log($scope.newResponse);
+            console.log(data);
+            //InterpelationCreateFactory.create($scope.newResponse);
         };
 
         //this.editMode = true;
-        //InterpelationCreateFactory.create($scope.newResponse);
 
+        //Notification.success("adaugata");
 
 
         $scope.saveInterpelation = function(data) {
             //  var timeStampDate = moment(data.interpelationDate, "dd-MM-yyyy").valueOf();
+            //$scope.interpelationDate = moment(data.interpelationDate).format("DD-MM-YYYY");
+            console.log(data.interpelationDate);
             $scope.newResponse = {
+                id: data.id,
                 parentId: data.parentId,
                 interpelationNr: data.interpelationNr,
                 interpelationType: data.interpelationType,
                 interpelationPriority: "RIDICATA",
-                interpelationDate: data.interpelationDate,
+                interpelationDate: moment(data.interpelationDate, "DD-MM-YYYY").valueOf(),
                 executionDate: null,
                 country: {
                     "cod": data.selectedCountry
@@ -272,16 +319,26 @@ app.controller('IntplDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Inte
                 mailMessage: null
 
             };
-            console.log(data);
 
-            //  InterpelationCreateFactory.create($scope.newResponse);
+            //console.log($scope.newResponse.interpelationDate);
+
+            InterpelationCreateFactory.create($scope.newResponse);
             //update the tree after interpelation creation
-            //  $scope.tree = InterpelationTreeFactory.query({
-            //      id: $routeParams.id
-            //  });
-            Notification.success("A fost adaugata interpelarea " + $scope.newResponse.interpelationNr);
-            //resetam newResponse
-            //  $scope.newResponse = {};
+            InterpelationTreeFactory.query({
+                    id: $routeParams.id
+                },
+                function(data) {
+                    $scope.tree = data;
+                    //console.log(data);
+                    //console.log("Succces query");
+                    Notification.success("A fost adaugata interpelarea " + $scope.newResponse.interpelationNr);
+                    //resetam newResponse
+                    $scope.newResponse = {};
+                },
+                function() {
+                    console.log("error query");
+                }
+            );
             //  var id = data.id;
             // actions performed after validation
             /*  if (true) {
@@ -408,7 +465,7 @@ app.controller('IntplCreateCtrl', ['$scope',
 
 
             // Interpelation Creation from Factory
-            //InterpelationCreateFactory.create($scope.intpl);
+            InterpelationCreateFactory.create($scope.intpl);
             Notification.success("Interpelarea Nr: " + $scope.intpl.interpelationNr + " a fost adaugata");
             console.log($scope.intpl);
 

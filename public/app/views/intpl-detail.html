@@ -1,18 +1,18 @@
-<div >
-<nav class="navbar navbar-default navbar-static-top asias-navbar">
-  <div class="row">
-    <div class="col-sm-4">
-      <label>Interpelarea Nr:  {{tree[0].interpelationNr}}</label>
-    </div>
-    <div class="btn-group" role="group" aria-label="...">
-      <button type="button" class="btn btn-default"><a href="/#/">Inchide</a></button>
-      <button type="button" class="btn btn-default">Atribuie</button>
-      <button type="button" class="btn btn-default">Raspunde</button>
-    </div>
-  </div>
-</nav>
+<div>
+    <nav class="navbar navbar-default navbar-static-top asias-navbar">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Interpelarea Nr:  {{tree[0].interpelationNr}}</label>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default"><a href="/#/">Inapoi</a></button>
+                <button type="button" class="btn btn-default">Atribuie</button>
+                <button type="button" class="btn btn-default">Raspunde</button>
+            </div>
+        </div>
+    </nav>
 
-<!--div class="panel panel-primary interpelation-body">
+    <!--div class="panel panel-primary interpelation-body">
   <div class="panel-heading">
     <span>  Interpelarea Nr:  {{intpl.interpelationNr}} </span>
   </div>
@@ -86,7 +86,7 @@
 
 
   </div-->
-  <ul class="col-md-8">
-      <li ng-repeat="item in tree track by $index "  ng-include="templateTree" ></li>
-  </ul>
+    <ul class="col-md-8">
+        <li ng-repeat="item in tree track by $index " ng-include="templateTree"></li>
+    </ul>
 </div>
