@@ -532,7 +532,8 @@ app.controller('AuthoritiesCtrl', ['$scope',
     '$location',
     'AuthoritiesFactory',
     'Notification',
-    function($scope, $location, AuthoritiesFactory, Notification) {
+    'CountryFactory',
+    function($scope, $location, AuthoritiesFactory, Notification, CountryFactory) {
         $scope.authoritiesList = AuthoritiesFactory.query();
         $scope.updateAuthority = function(data) {
             console.log(data);
