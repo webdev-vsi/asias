@@ -513,12 +513,26 @@ app.controller('CountriesCtrl', ['$scope',
 app.controller('SubjectsCtrl', ['$scope',
     '$location',
     'InterpelationSubjectFactory',
-    function($scope, $location, InterpelationSubjectFactory) {
+    'Notification',
+    function($scope, $location, InterpelationSubjectFactory, Notification) {
         $scope.subjectsList = InterpelationSubjectFactory.query();
         $scope.saveSubject = function(data) {
-            console.log(data);
-            InterpelationSubjectFactory.create(data);
-        }
+            if (data === null || data === undefined) {
+                Notification.error("Subiectul trebuie completat");
+                return;
+            }
+            InterpelationSubjectFactory.create(data,
+                function() {
+                    $scope.subjectsList = InterpelationSubjectFactory.query();
+                    Notification.success("Subiect adaugat cu succes!");
+                    $scope.editMode = false;
+                    $scope.new.subjectName = '';
+                },
+                function(error) {
+
+                }
+            );
+        };
     }
 ]);
 app.controller('CustomsOfficesCtrl', ['$scope',
@@ -534,13 +548,50 @@ app.controller('AuthoritiesCtrl', ['$scope',
     'Notification',
     'CountryFactory',
     function($scope, $location, AuthoritiesFactory, Notification, CountryFactory) {
+        //Authorities factory
         $scope.authoritiesList = AuthoritiesFactory.query();
+        //countrie factory
+        $scope.countries = CountryFactory.query();
+        $scope.selectedCountry = $scope.countries[0];
+
+
+        //actions
         $scope.updateAuthority = function(data) {
             console.log(data);
             Notification.success("Autoritate adaugata");
         };
         $scope.addAuthority = function(data) {
-            console.log(data);
+            //create newAuthority object
+            var newAuthority = {
+                "authorityType": data.authorityType,
+                "authorityName": data.authorityName,
+                "country": {
+                    "cod": data.selectedCountry
+                }
+            };
+            //validation for each field
+            for (var key in newAuthority) {
+                var obj = newAuthority[key];
+                if (obj === undefined) {
+                    Notification.error("Elementul: " + key + " este obligatoriu!");
+                }
+            }
+
+            //Perform actions with new object
+            AuthoritiesFactory.create(newAuthority,
+                function() {
+                    Notification.success("Autoritate adaugata cu succes");
+                    $scope.authoritiesList = AuthoritiesFactory.query();
+                    $scope.addMode = false;
+                    $scope.new = '';
+                },
+                function(error) {
+                    Notification.error("A aparut o erroare" + error);
+                }
+            );
+            //$scope.authoritiesList.push(newAuthority);
+            //console.log(newAuthority);
+
         };
     }
 ]);

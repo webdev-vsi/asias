@@ -37,9 +37,13 @@
             <div class="col-sm-3 col-md-2 sidebar">
                 <div class="nav nav-sidebar">
                     <div class="text-center ">
-                        <a class="btn success" ng-click="createIntpl=true" id="add" href="">
+                        <!--a class="btn success" ng-click="createIntpl=true" id="add" href="">
                             <input type="button" value="Creare Demers" class="btn btn-primary">
-                        </a>
+                        </a-->
+                        <button ng-click="createIntpl=true;" class="btn btn-primary">
+                          <span class="glyphicon glyphicon-plus"></span>
+                          Creare Demers
+                        </button>
                         <!--input id="create-interpelation-btn" type="button" value="Creare Demers" class="btn btn-primary"-->
                     </div>
                 </div>
@@ -54,10 +58,10 @@
                 </ul>
                 <label><span class="glyphicon glyphicon-folder-open"></span> - Nomenclatoare</label>
                 <ul class="nav ">
-                    <li><a href="/#/countries"><span class="glyphicon glyphicon-globe"></span> Tari</a></li>
                     <!--li><a href="/#/customs-offices"><span class="glyphicon glyphicon-flag"></span> Birouri Vamale</a></li-->
                     <li><a href="/#/subjects"><span class="glyphicon glyphicon-tags"></span> Tipuri de subiecte</a></li>
                     <li><a href="/#/authorities"><span class="glyphicon glyphicon-modal-window"></span> Autoritati</a></li>
+                    <li><a href="/#/countries"><span class="glyphicon glyphicon-globe"></span> Tari</a></li>
                 </ul>
                 <label><span class="glyphicon glyphicon-folder-open"></span> - Rapoarte</label>
                 <ul class="nav ">
