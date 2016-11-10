@@ -13,7 +13,29 @@ app.run(function($rootScope, $templateCache) {
         $templateCache.removeAll();
     });
 });
+app.controller('ReportsCtrl', ['$scope',
+    'InterpelationsFactory',
+    function($scope, InterpelationsFactory) {
 
+        InterpelationsFactory.query(
+            function(data) {
+                $scope.table = data;
+                console.log(data);
+            },
+            function(error) {
+                alert(error);
+            });
+
+        $scope.exportData = function() {
+            var blob = new Blob([document.getElementById('exportable').innerHTML], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+            });
+            saveAs(blob, "Report.xls");
+        };
+
+
+    }
+]);
 app.controller('IntplListCtrl', ['$scope',
     'InterpelationsFactory',
     'InterpelationFactory',
@@ -73,76 +95,57 @@ app.controller('IntplListCtrl', ['$scope',
                             node.push(c);
                         }
                     });
-                return node;
                 type = '';
+                return node;
             };
 
             $scope.interpelations = $scope.makeList($scope.interpelations, InOut);
-
-
-
-            /*  TREE TRANSFORMATIONS BEGIN
-
-            $scope.makeTree = function makeTree(interpelations, parent) {
-                console.log($scope.interpelations)
-                var node = {};
-                interpelations
-                .filter(function (c) {
-                    return c.parrentId == parent;
-                  })
-                .forEach(function (c) {
-                    node[c.id] = makeTree(interpelations, c.id);
-                    return node[c]
-                 });
-                return node;
-              };
-              console.log($scope.makeTree($scope.interpelations));
-
-              var nodes  = $scope.interpelations;
-
-              function unflatten(arr) {
-                var tree = [],
-                    mappedArr = {},
-                    arrElem,
-                    mappedElem;
-
-                // First map the nodes of the array to an object -> create a hash table.
-                for(var i = 0, len = arr.length; i < len; i++) {
-                  arrElem = arr[i];
-                  mappedArr[arrElem.id] = arrElem;
-                  mappedArr[arrElem.id]['children'] = [];
+        });
+        /*  TREE TRANSFORMATIONS BEGIN
+        $scope.makeTree = function makeTree(interpelations, parent) {
+            console.log($scope.interpelations)
+            var node = {};
+            interpelations
+            .filter(function (c) {
+                return c.parrentId == parent;
+              })
+            .forEach(function (c) {
+                node[c.id] = makeTree(interpelations, c.id);
+                return node[c]
+             });
+            return node;
+          };
+          console.log($scope.makeTree($scope.interpelations));
+          var nodes  = $scope.interpelations;
+          function unflatten(arr) {
+            var tree = [],
+                mappedArr = {},
+                arrElem,
+                mappedElem;
+            // First map the nodes of the array to an object -> create a hash table.
+            for(var i = 0, len = arr.length; i < len; i++) {
+              arrElem = arr[i];
+              mappedArr[arrElem.id] = arrElem;
+              mappedArr[arrElem.id]['children'] = [];
+            }
+            for (var id in mappedArr) {
+              if (mappedArr.hasOwnProperty(id)) {
+                mappedElem = mappedArr[id];
+                // If the element is not at the root level, add it to its parent array of children.
+                if (mappedElem.parrentId) {
+                  mappedArr[mappedElem['parrentId']]['children'].push(mappedElem);
                 }
-
-
-                for (var id in mappedArr) {
-                  if (mappedArr.hasOwnProperty(id)) {
-                    mappedElem = mappedArr[id];
-                    // If the element is not at the root level, add it to its parent array of children.
-                    if (mappedElem.parrentId) {
-                      mappedArr[mappedElem['parrentId']]['children'].push(mappedElem);
-                    }
-                    // If the element is at the root level, add it to first level elements array.
-                    else {
-                      tree.push(mappedElem);
-                    }
-                  }
+                // If the element is at the root level, add it to first level elements array.
+                else {
+                  tree.push(mappedElem);
                 }
-                return tree;
               }
-              $scope.tree = unflatten(nodes);
-              console.log(JSON.stringify($scope.tree, null, null, 2));
-
-
-            END OF TREE TRANSFORMATIONS
-            */
-
-
-
-        })
-
-        //console.log($scope.array);
-
-
+            }
+            return tree;
+          }
+          $scope.tree = unflatten(nodes);
+          console.log(JSON.stringify($scope.tree, null, null, 2));
+        END OF TREE TRANSFORMATIONS */
 
     }
 ]);

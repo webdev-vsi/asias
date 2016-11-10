@@ -1,0 +1,39 @@
+<div class="panel panel-default panel-margin">
+    <div class="panel-heading">
+        <label><span class="glyphicon glyphicon-list-alt"></span> Rapoarte</label>
+    </div>
+    <div class="panel-body">
+        <button class="btn btn-default" ng-click="exportData()">EXPORT EXCEL <span class="glyphicon glyphicon-save"></span></button>
+        <div id="exportable">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            interpelationNr
+                        </th>
+                        <th>
+                            interpelationPriority
+                        </th>
+                        <th>
+                            interpelationType
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in table">
+                        <td>
+                            {{item.interpelationNr}}
+                        </td>
+                        <td>
+                            {{item.interpelationPriority}}
+                        </td>
+                        <td>
+                            {{item.interpelationType}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />
+    </div>
+</div>

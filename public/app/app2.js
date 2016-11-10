@@ -7,7 +7,8 @@ angular.module('ngAsiasApp', [
         'ngAsiasApp.controllers',
         'datetimepicker',
         'ui-notification',
-        'angularMoment'
+        'angularMoment',
+        'ui.bootstrap',
     ])
     .filter('htmlToPlaintext', function() {
         return function(text) {
@@ -47,6 +48,10 @@ angular.module('ngAsiasApp', [
             .when('/email-import/:id', {
                 templateUrl: 'app/views/importEmail.view.html',
                 controller: 'EmailImportCtrl'
+            })
+            .when('/reports', {
+                templateUrl: 'app/views/reports.view.html',
+                controller: 'ReportsCtrl'
             })
             .otherwise({
                 redirectTo: '/'
