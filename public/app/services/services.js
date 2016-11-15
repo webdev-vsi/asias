@@ -77,6 +77,15 @@ services.factory('InterpelationPriorityFactory', function($resource) {
     });
 });
 
+services.factory('InterpelationStateFactory', function($resorce) {
+    return $resorce(baseUrl + '/interpelationState', {}, {
+        query: {
+            method: 'GET',
+            isArray: true
+        }
+    });
+});
+
 services.factory('InterpelationTreeFactory', function($resource) {
     return $resource(baseUrl + '/interpelation-tree/:id', {}, {
         query: {

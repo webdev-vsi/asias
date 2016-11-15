@@ -368,6 +368,7 @@ app.controller('IntplCreateCtrl', ['$scope',
     'InterpelationPriorityFactory',
     'AuthoritiesFactory',
     'Notification',
+    '$route',
     function($scope,
         $rootScope,
         $timeout,
@@ -379,7 +380,8 @@ app.controller('IntplCreateCtrl', ['$scope',
         InterpelationTypeFactory,
         InterpelationPriorityFactory,
         AuthoritiesFactory,
-        Notification
+        Notification,
+        $route
     ) {
 
 
@@ -493,6 +495,7 @@ app.controller('IntplCreateCtrl', ['$scope',
             // Interpelation Creation from Factory
             InterpelationCreateFactory.create($scope.intpl);
             Notification.success("Interpelarea Nr: " + $scope.intpl.interpelationNr + " a fost adaugata");
+
             console.log($scope.intpl);
 
             //Setting Interpelation Window show to false
@@ -500,7 +503,7 @@ app.controller('IntplCreateCtrl', ['$scope',
 
             //Clearing  all values for next interpelation
             $scope.intpl = '';
-            //  $location.path('/intpl-list');
+            $route.reload();
 
 
         }
