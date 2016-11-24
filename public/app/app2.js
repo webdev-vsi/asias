@@ -9,6 +9,7 @@ angular.module('ngAsiasApp', [
         'ui-notification',
         'angularMoment',
         'ui.bootstrap',
+        'angular-loading-bar',
     ])
     .filter('htmlToPlaintext', function() {
         return function(text) {

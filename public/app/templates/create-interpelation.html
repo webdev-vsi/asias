@@ -1,5 +1,16 @@
 <table>
     <form method="post">
+        <label ng-init="intpl.isClosed = 0;intpl.parentId = 0" ng-hide="true"></label>
+        <tr ng-show="emailImport">
+            <td class="col-md-6">
+                Interpelarea parinte:
+            </td>
+            <td>
+                <select>
+                  <option>asd</option>
+                </select>
+            </td>
+        </tr>
         <tr>
             <td class="col-md-6">Tip demers</td>
             <td>
@@ -23,10 +34,10 @@
         <tr>
             <td class="col-md-6">Data demers intial ACSV</td>
             <td>
-                <div class='input-group date' id='datetimepicker1'>
-                    <input datetimepicker name="interpelationDate" ng-model="intpl.interpelationDateInitialACSV" type='text' class="form-control" />
+                <div class='input-group date' id='interpelationDate'>
+                    <input datetimepicker name="interpelationDate" ng-model="intpl.interpelationDate" type='text' class="form-control" />
                     <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
+                  <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </td>
@@ -34,7 +45,7 @@
         <tr>
             <td class="col-md-6">Tara Solicitantului</td>
             <td>
-                <select ng-init="intpl.selectedCountry=498" class="form-control" ng-model="intpl.selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                <select ng-init="intpl.selectedCountry='MD'" class="form-control" ng-model="intpl.selectedCountry" ng-options="selectedCountry.countryCod2 as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
                 </select>
             </td>
         </tr>
@@ -65,7 +76,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputFile">Tara Autoritate</label>
-                            <select ng-init="selectedCountry=498" class="form-control" ng-model="selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                            <select ng-init="selectedCountry='MD'" class="form-control" ng-model="selectedCountry" ng-options="selectedCountry.countryCod2 as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
                             </select>
                         </div>
                         <button type="submit" ng-click="addAuthority(authority)" class="btn btn-success">Adauga</button>
@@ -77,20 +88,20 @@
         <tr>
             <td class="col-md-6">Denumirea autoritatii solicitante:</td>
             <td>
-                <input class="form-control" type="text" class="input-sm">
+                <input ng-model="intpl.authorityName" class="form-control" type="text" class="input-sm">
             </td>
         </tr>
         <tr>
             <td class="col-md-6">Nr. de referinta a demersului solicitantului</td>
             <td>
-                <input class="form-control" type="text" class="input-sm">
+                <input ng-model="intpl.applicantInterpelationNr" class="form-control input-sm" type="text">
             </td>
         </tr>
         <tr>
             <td class="col-md-6">Data demersului solicitantului</td>
             <td>
-                <div class='input-group date' id='datetimepicker1'>
-                    <input ng-init="intpl.interpelationDateApplicant=null" datetimepicker name="interpelationDate" ng-model="intpl.interpelationDateApplicant" type='text' class="form-control" />
+                <div class='input-group date' id='applicantInterpelationDate'>
+                    <input ng-init="intpl.applicantInterpelationDate=null" datetimepicker name="applicantInterpelationDate" ng-model="intpl.applicantInterpelationDate" type='text' class="form-control" />
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -119,6 +130,14 @@
             </td>
         </tr>
         <tr>
+            <td class="col-md-6">
+                Subiectul Cererii optional
+            </td>
+            <td>
+                <input ng-model="intpl.subjectTypeOptional" type="text" class="form-control input-sm" />
+            </td>
+        </tr>
+        <tr>
             <td class="col-md-6">Detalii:</td>
             <td>
                 <textarea ng-init="intpl.description=null" rows="5" cols="15" class="form-control" ng-model="intpl.description"></textarea>
@@ -127,8 +146,8 @@
         <tr>
             <td class="col-md-6">Termenul de executare</td>
             <td>
-                <div class='input-group date' id='datetimepicker1'>
-                    <input ng-init="null" datetimepicker name="interpelationDate" ng-model="intpl.executionDeadline" type='text' class="form-control" />
+                <div class='input-group date' id='executionDate'>
+                    <input ng-init="intpl.executionDate=null" datetimepicker name="executionDate" ng-model="intpl.executionDate" type='text' class="form-control" />
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                     </span>

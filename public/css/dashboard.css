@@ -366,3 +366,14 @@ ul {
 .panel-margin {
     margin: 15px;
 }
+
+
+/* Pagination restyle */
+
+.pagination-custom .pagination {
+    margin: 0;
+}
+
+.pagination-custom .pagination ul {
+    margin: 0;
+}

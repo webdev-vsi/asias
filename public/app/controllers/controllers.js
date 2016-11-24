@@ -39,34 +39,137 @@ app.controller('ReportsCtrl', ['$scope',
 app.controller('IntplListCtrl', ['$scope',
     'InterpelationsFactory',
     'InterpelationFactory',
+    'InterpelationPaginator',
     '$location',
+    '$rootScope',
     function(
         $scope,
         InterpelationsFactory,
         InterpelationFactory,
-        $location
+        InterpelationPaginator,
+        $location,
+        $rootScope
     ) {
 
-        /* callback for ng-click 'editUser': */
-        $scope.editIntpl = function(intplId) {
-            $location.path('/intpl-detail/' + intplId);
+        $scope.pageSize = 15;
+        $scope.currentPage = 0;
+        $scope.displayPagesLength = 10;
+
+
+        function getDirection() {
+            var getDirection = $location.search();
+            var direction;
+            if (getDirection.type === "entries") {
+                direction = "INTRARE";
+            } else if (getDirection.type === "output") {
+                direction = "IESIRE";
+            } else {
+                direction = 'TOATE';
+            }
+            return direction;
+        }
+
+
+        var renderPagedTree = function() {
+            InterpelationPaginator.query({
+                page: $scope.currentPage,
+                size: $scope.pageSize,
+                direction: getDirection()
+            }, function(response) {
+                //console.log(InOut.type);
+                $scope.interpelations = response.result;
+                $scope.pageCount = response.pageCount - 1;
+                $scope.rowCount = response.rowCount;
+                //$rootScope.intrari = $scope.rowCount;
+                $scope.PaginatorElements = displayPages($scope.displayPagesLength, $scope.pageCount, $scope.currentPage);
+            });
         };
 
-        /* callback for ng-click 'deleteUser':
-        $scope.deleteUser = function (userId) {
-          UserFactory.delete({ id: userId });
-          $scope.users = UsersFactory.query();
+
+        renderPagedTree();
+
+        var displayPages = function(displayPagesLength, pageCount, currentPage) {
+            var displayPagesArr = [];
+
+            if (pageCount <= displayPagesLength) {
+                displayPagesLength = pageCount;
+            }
+            for (var i = 0; i <= displayPagesLength; i++) {
+                displayPagesArr[i] = currentPage + i;
+                if (displayPagesArr[i] === pageCount) {
+                    //console.log(displayPagesArr[i]);
+                    //console.log(displayPagesArr);
+                    return displayPagesArr;
+                }
+            }
+            //console.log(displayPagesArr);
+            return displayPagesArr;
         };
-        */
 
 
-        /* callback for ng-click 'createUser': */
-        $scope.createNewUser = function() {
-            $location.path('/intpl-creation');
+        $scope.firstPage = function() {
+            if ($scope.currentPage === 0) {
+                return;
+            }
+            $scope.currentPage = 0;
+            renderPagedTree();
+            $scope.PaginatorElements = displayPages($scope.displayPagesLength, $scope.pageCount, $scope.currentPage);
         };
 
-        //$scope.interpelations = InterpelationsFactory.query();
+        $scope.lastPage = function() {
+            $scope.currentPage = $scope.pageCount;
+            renderPagedTree();
+            //workaround for dispaing last array
+            var localCurrentPage = $scope.currentPage - $scope.displayPagesLength + 1;
+            $scope.PaginatorElements = displayPages($scope.displayPagesLength, $scope.pageCount, localCurrentPage);
+        };
 
+        $scope.thisPage = function(page) {
+            //console.log(page);
+            //console.log($scope.currentPage);
+            $scope.currentPage = page;
+            renderPagedTree();
+            //console.log($scope.currentPage);
+            //renderPagedTree();
+        };
+
+        $scope.morePages = function() {
+            var arrLength = $scope.PaginatorElements.length;
+            $scope.LastElem = $scope.PaginatorElements[arrLength - 1];
+
+            if ($scope.LastElem > $scope.pageCount) {
+                return;
+            }
+            $scope.currentPage = $scope.LastElem;
+            $scope.PaginatorElements = displayPages($scope.displayPagesLength, $scope.pageCount, $scope.LastElem);
+            renderPagedTree();
+            //  console.log($scope.PagesNumber);
+        };
+
+        $scope.nextPage = function() {
+
+            if ($scope.currentPage === $scope.pageCount) {
+                return;
+            }
+            //console.log($scope.pageCount, $scope.currentPage);
+            $scope.currentPage += 1;
+            renderPagedTree();
+
+            $scope.PaginatorElements = displayPages($scope.displayPagesLength, $scope.pageCount, $scope.currentPage);
+        };
+
+        $scope.prevPage = function() {
+            if ($scope.currentPage === 0) {
+                return;
+            }
+            $scope.currentPage -= 1;
+            renderPagedTree();
+            $scope.PaginatorElements = displayPages($scope.displayPagesLength, $scope.pageCount, $scope.currentPage);
+
+        };
+
+        /////////////////
+        /* ORIGINAL
         InterpelationsFactory.query([], function(response) {
 
             var InOut = $location.search();
@@ -101,6 +204,22 @@ app.controller('IntplListCtrl', ['$scope',
 
             $scope.interpelations = $scope.makeList($scope.interpelations, InOut);
         });
+        */
+
+        /* callback for ng-click 'editUser': */
+        $scope.editIntpl = function(intplId) {
+            $location.path('/intpl-detail/' + intplId);
+        };
+
+
+        /* callback for ng-click 'createUser': */
+        $scope.createNewUser = function() {
+            $location.path('/intpl-creation');
+        };
+
+        //$scope.interpelations = InterpelationsFactory.query();
+
+
         /*  TREE TRANSFORMATIONS BEGIN
         $scope.makeTree = function makeTree(interpelations, parent) {
             console.log($scope.interpelations)
@@ -149,9 +268,36 @@ app.controller('IntplListCtrl', ['$scope',
 
     }
 ]);
-
-app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParams', 'InterpelationFactory', 'InterpelationTreeFactory', 'InterpelationCreateFactory', 'CountryFactory', 'InterpelationSubjectFactory', 'AuthoritiesFactory', '$location', 'Notification', 'moment',
-    function($http, $scope, $rootScope, $routeParams, InterpelationFactory, InterpelationTreeFactory, InterpelationCreateFactory, CountryFactory, InterpelationSubjectFactory, AuthoritiesFactory, $location, Notification, moment) {
+app.controller('IntplDetailCtrl', ['$http',
+    '$scope',
+    '$rootScope',
+    '$routeParams',
+    'InterpelationFactory',
+    'InterpelationTreeFactory',
+    'InterpelationCreateFactory',
+    'CountryFactory',
+    'InterpelationSubjectFactory',
+    'AuthoritiesFactory',
+    '$location',
+    'Notification',
+    'moment',
+    'InterpelationTypeFactory',
+    'InterpelationPriorityFactory',
+    function($http,
+        $scope,
+        $rootScope,
+        $routeParams,
+        InterpelationFactory,
+        InterpelationTreeFactory,
+        InterpelationCreateFactory,
+        CountryFactory,
+        InterpelationSubjectFactory,
+        AuthoritiesFactory,
+        $location,
+        Notification,
+        moment,
+        InterpelationTypeFactory,
+        InterpelationPriorityFactory) {
 
         console.log($scope.exampleDate);
         //root element id
@@ -167,6 +313,15 @@ app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParam
         $scope.authorities = AuthoritiesFactory.query();
         $scope.selectedAuthoritie = $scope.authorities[0];
 
+        //Implementation of interpelation type
+        $scope.interpelationType = InterpelationTypeFactory.query();
+        $scope.selectedInterpelationType = $scope.interpelationType[0];
+
+        //Implementation of interpelation priority
+        $scope.interpelationPriority = InterpelationPriorityFactory.query();
+        $scope.selectedInterpelationPriority = $scope.interpelationPriority[0];
+
+
         /* callback for ng-click 'updateUser': */
         $scope.updateIntpl = function() {
             InterpelationFactory.update($scope.intpl);
@@ -175,12 +330,9 @@ app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParam
 
         /* callback for ng-click 'cancel': */
         $scope.cancel = function() {
-            $location.path('/user-list');
+            $location.path('/');
         };
-        //  $scope.tree = InterpelationTreeFactory.query({
-        //      id: $routeParams.id,
 
-        //  });
 
         $scope.tree = InterpelationTreeFactory.query({
                 id: $routeParams.id
@@ -204,16 +356,27 @@ app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParam
         //variable for editMode
         var dateTransform;
         $scope.editNode = function(item) {
+            console.log(item.editMode, item.showBody);
+
             //hack for displaying correct date format in datePicker and convert to timestamp
             if (!dateTransform) {
                 dateTransform = true;
                 //console.log("edit- " + item.interpelationDate);
+                //To dateFormat (DD-MM-YYYY)
                 item.interpelationDate = moment(item.interpelationDate).format("DD-MM-YYYY");
+                item.applicantInterpelationDate = moment(item.applicantInterpelationDate).format("DD-MM-YYYY");
+                item.executionDate = moment(item.executionDate).format("DD-MM-YYYY");
+                item.dateControl = moment(item.dateControl).format("DD-MM-YYYY");
+
                 //console.log("edit- " + item.interpelationDate);
             } else {
                 dateTransform = false;
                 //console.log(item.interpelationDate);
+                //To Timestamp
                 item.interpelationDate = moment(item.interpelationDate, "DD-MM-YYYY").valueOf();
+                item.applicantInterpelationDate = moment(item.applicantInterpelationDate, "DD-MM-YYYY").valueOf();
+                item.executionDate = moment(item.executionDate, "DD-MM-YYYY").valueOf();
+                item.dateControl = moment(item.dateControl, "DD-MM-YYYY").valueOf();
                 //console.log(item.interpelationDate);
             }
         };
@@ -265,25 +428,7 @@ app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParam
             });
             $scope.newResponse = {
                 parentId: data.id
-                    /*        interpelationNr: 3453453453,
-                            interpelationType: "IESIRE",
-                            interpelationPriority: "RIDICATA",
-                            interpelationDate: 1477353600000,
-                            executionDate: null,
-                            country: {
-                                "cod": 498
-                            },
-                            customsOffice: null,
-                            subjectType: {
-                                "id": 76
-                            },
-                            subjectTypeOptional: null,
-                            authority: {
-                                "id": 1
-                            },
-                            applicantInterpelationDate: null,
-                            description: "gdgfdgfdgfdgd",
-                            mailMessage: null */
+
             };
             console.log(data);
             //InterpelationCreateFactory.create($scope.newResponse);
@@ -297,7 +442,18 @@ app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParam
         $scope.saveInterpelation = function(data) {
             //  var timeStampDate = moment(data.interpelationDate, "dd-MM-yyyy").valueOf();
             //$scope.interpelationDate = moment(data.interpelationDate).format("DD-MM-YYYY");
-            console.log(data.interpelationDate);
+            data.isClosed = 0;
+            data.interpelationDate = moment(data.interpelationDate, "DD-MM-YYYY").valueOf();
+            data.applicantInterpelationDate = moment(data.applicantInterpelationDate, "DD-MM-YYYY").valueOf();
+            data.executionDate = moment(data.executionDate, "DD-MM-YYYY").valueOf();
+            data.dateControl = moment(data.dateControl, "DD-MM-YYYY").valueOf();
+            data.country = {
+                countryCod2: data.selectedCountry
+            };
+            data.authority = {
+                "id": data.selectedAuthoritie
+            };
+
             $scope.newResponse = {
                 id: data.id,
                 parentId: data.parentId,
@@ -307,7 +463,7 @@ app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParam
                 interpelationDate: moment(data.interpelationDate, "DD-MM-YYYY").valueOf(),
                 executionDate: null,
                 country: {
-                    "cod": data.selectedCountry
+                    "countryCod2": data.selectedCountry
                 },
                 customsOffice: null,
                 subjectType: {
@@ -322,37 +478,34 @@ app.controller('IntplDetailCtrl', ['$http', '$scope', '$rootScope', '$routeParam
                 mailMessage: null
 
             };
-
+            console.log($scope.newResponse)
+            console.log(data);
             //console.log($scope.newResponse.interpelationDate);
 
-            InterpelationCreateFactory.create($scope.newResponse);
-            //update the tree after interpelation creation
-            InterpelationTreeFactory.query({
-                    id: $routeParams.id
-                },
+            InterpelationCreateFactory.create(data,
                 function(data) {
-                    $scope.tree = data;
-                    //console.log(data);
-                    //console.log("Succces query");
-                    Notification.success("A fost adaugata interpelarea " + $scope.newResponse.interpelationNr);
-                    //resetam newResponse
-                    $scope.newResponse = {};
+                    InterpelationTreeFactory.query({
+                            id: $routeParams.id
+                        },
+                        function(data) {
+                            $scope.tree = data;
+                            //console.log(data);
+                            //console.log("Succces query");
+                            Notification.success("A fost adaugata interpelarea " + $scope.newResponse.interpelationNr);
+                            //resetam newResponse
+                            $scope.newResponse = {};
+
+                        },
+                        function() {
+                            console.log("error query");
+                        }
+                    );
                 },
-                function() {
-                    console.log("error query");
+                function(error) {
+                    console.log("errror");
                 }
             );
-            //  var id = data.id;
-            // actions performed after validation
-            /*  if (true) {
-                  InterpelationFactory.update({
-                      id: id
-                  }, data);
-                  console.log("data saved");
-                  return this.editMode = !this.editMode;
-              } else {
-                  console.log("something went wrong!");
-              }*/
+
         };
     }
 ]);
@@ -369,6 +522,7 @@ app.controller('IntplCreateCtrl', ['$scope',
     'AuthoritiesFactory',
     'Notification',
     '$route',
+    'moment',
     function($scope,
         $rootScope,
         $timeout,
@@ -381,7 +535,8 @@ app.controller('IntplCreateCtrl', ['$scope',
         InterpelationPriorityFactory,
         AuthoritiesFactory,
         Notification,
-        $route
+        $route,
+        moment
     ) {
 
 
@@ -467,12 +622,11 @@ app.controller('IntplCreateCtrl', ['$scope',
         $scope.createNewIntpl = function() {
             // console.log($scope.intpl);
 
-
             // Prepare Object To Be Created
 
             // Creating Country Object to send to Server
             $scope.intpl.country = {
-                "cod": $scope.selectedCountry
+                "countryCod2": $scope.intpl.selectedCountry
             };
 
             //AuthoritiesFactory
@@ -485,28 +639,208 @@ app.controller('IntplCreateCtrl', ['$scope',
                 "id": $scope.intpl.selectedSubjectType
             };
             $scope.intpl.interpelationPriority = $scope.intpl.selectedInterpelationPriority;
+
             //Convert To Timestamp
-            $scope.intpl.interpelationDateInitialACSV = new Date($scope.intpl.interpelationDateInitialACSV.split("-").reverse().join("-")).getTime();
-            //console.log($scope.intpl.interpelationDate);
-            //console.log($scope.intpl.country);
-            $scope.intpl.interpelationDate = $scope.intpl.interpelationDateInitialACSV;
+            $scope.intpl.interpelationDate = moment($scope.intpl.interpelationDate, "DD-MM-YYYY").valueOf();
+            $scope.intpl.applicantInterpelationDate = moment($scope.intpl.applicantInterpelationDate, "DD-MM-YYYY").valueOf();
+            $scope.intpl.executionDate = moment($scope.intpl.executionDate, "DD-MM-YYYY").valueOf();
 
 
             // Interpelation Creation from Factory
-            InterpelationCreateFactory.create($scope.intpl);
-            Notification.success("Interpelarea Nr: " + $scope.intpl.interpelationNr + " a fost adaugata");
-
             console.log($scope.intpl);
 
-            //Setting Interpelation Window show to false
-            $rootScope.createIntpl = false;
+            InterpelationCreateFactory.create($scope.intpl,
+                function(success) {
+                    Notification.success("Interpelarea Nr: " + $scope.intpl.interpelationNr + " a fost adaugata");
+                    console.log($scope.intpl);
 
-            //Clearing  all values for next interpelation
-            $scope.intpl = '';
-            $route.reload();
+                    //Setting Interpelation Window show to false
+                    $rootScope.createIntpl = false;
+
+                    //Clearing  all values for next interpelation
+                    $scope.intpl = '';
+
+                    $route.reload();
+                },
+                function(error) {
+                    Notification.error("Interpelarea Nr: " + $scope.intpl.interpelationNr + " nu a fost adaugata");
+                    return;
+                }
+            );
+        };
+    }
+]);
+app.controller('EmailImportCtrl', ['$scope',
+    '$rootScope',
+    '$routeParams',
+    'EmailImportFactory',
+    '$timeout',
+    'InterpelationCreateFactory',
+    'CountryFactory',
+    '$location',
+    'CustomsOfficesFactory',
+    'InterpelationSubjectFactory',
+    'InterpelationTypeFactory',
+    'InterpelationPriorityFactory',
+    'AuthoritiesFactory',
+    '$filter',
+    'Notification',
+    'moment',
+    function($scope,
+        $rootScope,
+        $routeParams,
+        EmailImportFactory,
+        $timeout,
+        InterpelationCreateFactory,
+        CountryFactory,
+        $location,
+        CustomsOfficesFactory,
+        InterpelationSubjectFactory,
+        InterpelationTypeFactory,
+        InterpelationPriorityFactory,
+        AuthoritiesFactory,
+        $filter,
+        Notification,
+        moment) {
+
+        $scope.emailImport = true;
+
+        $scope.countries = CountryFactory.query();
+        console.log($scope.countries);
+        $scope.selectedCountry = $scope.countries[0];
+        //$scope.intpl.country = 2;
+        //$scope.inptl.country = $scope.selectedCountry;
+
+        //Implementation of Customs Office Factory
+        $scope.customsOffices = CustomsOfficesFactory.query();
+        $scope.selectedCustomsOffice = $scope.customsOffices[0];
+
+        //Implementation of authorities list
+        $scope.authorities = AuthoritiesFactory.query();
+        $scope.selectedAuthoritie = $scope.authorities[0];
+
+        //Implementation of subjectTypes
+        $scope.subjectTypes = InterpelationSubjectFactory.query();
+        //$scope.selectedSubjectType = $scope.subjectTypes[0];
+
+        //Implementation of interpelation type
+        $scope.interpelationType = InterpelationTypeFactory.query();
+        $scope.selectedInterpelationType = $scope.interpelationType[0];
+
+        //Implementation of interpelation priority
+        $scope.interpelationPriority = InterpelationPriorityFactory.query();
+        $scope.selectedInterpelationPriority = $scope.interpelationPriority[0];
+
+        $scope.messageToImport = EmailImportFactory.query({
+            id: $routeParams.id
+        });
+        //console.log(id: $routeParams.id);
+        $scope.getDate = function(message) {
+            /*
+            @message params
+              content
+              from
+              messageId
+              replyTo
+              sentDate
+              subject
+              to
+            */
+
+            function search(nameKey, prop, myArray) {
+                for (var i = 0; i < myArray.length; i++) {
+                    if (myArray[i][prop] === nameKey) {
+                        return myArray[i];
+                    }
+                }
+                return false;
+            }
+
+            var result = search(message.subject, 'subjectName', $scope.subjectTypes);
+
+            //Begin Data asign from email
+            if (result) {
+                $scope.intpl.selectedSubjectType = result.id;
+            }
+            //Date transformation
+            $scope.intpl.interpelationDate = moment(message.sentDate).format("DD-MM-YYYY");
+            $scope.intpl.applicantInterpelationDate = moment(message.sentDate).format("DD-MM-YYYY");
+
+            //Other fields
+            $scope.intpl.description = message.content;
+            //End Data asign from email
 
 
-        }
+            //Debug information
+            /*
+            console.log(result);
+            console.log(message)
+            console.log($scope.subjectTypes);
+            */
+
+
+            /*
+              var sentDateTimestamp = message.sentDate;
+              message.sentDate = $filter('date')(message.sentDate, 'dd-MM-yyyy');
+              $scope.intpl.interpelationDate = message.sentDate;
+              console.log($scope.intpl.interpelationDateApplicant);
+
+              console.log(message.content);
+              $scope.intpl.description = message.content;
+              //  intplImport.interpelationNr = date;
+
+              //console.log(message.sentDate.setMonth());
+              var datePlusMonth = sentDateTimestamp + 2592000000;
+              console.log(datePlusMonth);
+              console.log(sentDateTimestamp);
+
+              $scope.intpl.executionDeadline = $filter('date')(datePlusMonth, 'dd-MM-yyyy');
+              console.log($scope.intpl.executionDeadline);
+              */
+
+        };
+
+        $scope.createNewIntpl = function() {
+
+            var id = $routeParams.id;
+
+
+            $scope.intpl.country = {
+                "countryCod2": $scope.intpl.selectedCountry
+            };
+
+            //AuthoritiesFactory
+            $scope.intpl.authority = {
+                "id": $scope.intpl.selectedAuthoritie
+            };
+
+            //Subject
+            $scope.intpl.subjectType = {
+                "id": $scope.intpl.selectedSubjectType
+            };
+            $scope.intpl.interpelationPriority = $scope.intpl.selectedInterpelationPriority;
+            //console.log(intplObject);
+            //var intplObjectPretty = angular.toJson(intplObject);
+            //console.log(intplObjectPretty);
+            $scope.intpl.interpelationDate = moment($scope.intpl.interpelationDate, "DD-MM-YYYY").valueOf();
+            $scope.intpl.applicantInterpelationDate = moment($scope.intpl.applicantInterpelationDate, "DD-MM-YYYY").valueOf();
+            $scope.intpl.executionDate = moment($scope.intpl.executionDate, "DD-MM-YYYY").valueOf();
+            //console.log($scope.intpl);
+            //console.log(id);
+            EmailImportFactory.create({
+                    id: id
+                },
+                $scope.intpl,
+
+                function(success) {
+                    Notification.success("Mesajul a fost importat");
+                    $location.path('#/');
+                },
+                function(error) {
+                    Notification.error("A aparut o eroare la import: " + error);
+                });
+        };
+
     }
 ]);
 app.controller('CountriesCtrl', ['$scope',
@@ -527,6 +861,7 @@ app.controller('SubjectsCtrl', ['$scope',
                 Notification.error("Subiectul trebuie completat");
                 return;
             }
+
             InterpelationSubjectFactory.create(data,
                 function() {
                     $scope.subjectsList = InterpelationSubjectFactory.query();
@@ -572,8 +907,10 @@ app.controller('AuthoritiesCtrl', ['$scope',
                 "authorityType": data.authorityType,
                 "authorityName": data.authorityName,
                 "country": {
-                    "cod": data.selectedCountry
-                }
+                    "countryCod2": data.selectedCountry
+                },
+                "valid": true
+
             };
             //validation for each field
             for (var key in newAuthority) {
@@ -603,13 +940,15 @@ app.controller('AuthoritiesCtrl', ['$scope',
 ]);
 app.controller('EmailCountCtrl', ['$scope', '$http', 'EmailCountFactory', 'EmailListFactory', function($scope, $http, EmailCountFactory, EmailListFactory) {
     $scope.emailsCount = "";
-    $http.get("http://localhost:8080/mail-count")
-        .then(function(response) {
-            $scope.emailsCount = response.data;
-            //console.log($scope.myWelcome);
-        });
-    var emaillength = EmailCountFactory.query();
-    console.log(emaillength);
+    /*  $http.get("http://localhost:8080/mail-count")
+          .then(function(response) {
+              $scope.emailsCount = response.data;
+              //console.log($scope.myWelcome);
+          });
+      var emaillength = EmailCountFactory.query();
+      console.log(emaillength);
+
+      */
     //$scope.emailsCount = emaillength.length;
     //$scope.emailsCount = length.length();
     //$scope.emailsCount = EmailCountFactory.query();
@@ -648,117 +987,7 @@ app.controller('EmailListCtrl', ['$scope', '$http', 'EmailListFactory', '$locati
         };
     }
 ]);
-app.controller('EmailImportCtrl', ['$scope',
-    '$rootScope',
-    '$routeParams',
-    'EmailImportFactory',
-    '$timeout',
-    'InterpelationCreateFactory',
-    'CountryFactory',
-    '$location',
-    'CustomsOfficesFactory',
-    'InterpelationSubjectFactory',
-    'InterpelationTypeFactory',
-    'InterpelationPriorityFactory',
-    'AuthoritiesFactory',
-    '$filter',
-    'Notification',
 
-    function($scope,
-        $rootScope,
-        $routeParams,
-        EmailImportFactory,
-        $timeout,
-        InterpelationCreateFactory,
-        CountryFactory,
-        $location,
-        CustomsOfficesFactory,
-        InterpelationSubjectFactory,
-        InterpelationTypeFactory,
-        InterpelationPriorityFactory,
-        AuthoritiesFactory,
-        $filter,
-        Notification) {
-
-
-        $scope.countries = CountryFactory.query();
-        console.log($scope.countries);
-        $scope.selectedCountry = $scope.countries[0];
-        //$scope.intpl.country = 2;
-        //$scope.inptl.country = $scope.selectedCountry;
-
-        //Implementation of Customs Office Factory
-        $scope.customsOffices = CustomsOfficesFactory.query();
-        $scope.selectedCustomsOffice = $scope.customsOffices[0];
-
-        //Implementation of authorities list
-        $scope.authorities = AuthoritiesFactory.query();
-        $scope.selectedAuthoritie = $scope.authorities[0];
-
-        //Implementation of subjectTypes
-        $scope.subjectTypes = InterpelationSubjectFactory.query();
-        //$scope.selectedSubjectType = $scope.subjectTypes[0];
-
-        //Implementation of interpelation type
-        $scope.interpelationType = InterpelationTypeFactory.query();
-        $scope.selectedInterpelationType = $scope.interpelationType[0];
-
-        //Implementation of interpelation priority
-        $scope.interpelationPriority = InterpelationPriorityFactory.query();
-        $scope.selectedInterpelationPriority = $scope.interpelationPriority[0];
-
-        $scope.messageToImport = EmailImportFactory.query({
-            id: $routeParams.id
-        });
-        //console.log(id: $routeParams.id);
-        $scope.getDate = function(message) {
-            var sentDateTimestamp = message.sentDate;
-            message.sentDate = $filter('date')(message.sentDate, 'dd-MM-yyyy');
-            $scope.intpl.interpelationDateApplicant = message.sentDate;
-            console.log($scope.intpl.interpelationDateApplicant);
-
-            console.log(message.content);
-            $scope.intpl.description = message.content;
-            //  intplImport.interpelationNr = date;
-
-            //console.log(message.sentDate.setMonth());
-            var datePlusMonth = sentDateTimestamp + 2592000000;
-            console.log(datePlusMonth);
-            console.log(sentDateTimestamp);
-
-            $scope.intpl.executionDeadline = $filter('date')(datePlusMonth, 'dd-MM-yyyy');
-            console.log($scope.intpl.executionDeadline);
-        }
-
-        $scope.createNewIntpl = function() {
-            //var id = "%3C25c47b8bae2b728443faaaa74d1cbd65@vsi.md%3E";
-            var intplObject = {
-                //   "id" : "%3C25c47b8bae2b728443faaaa74d1cbd65@vsi.md%3E",
-                "parentId": "0",
-                "interpelationNr": $scope.intpl.interpelationNr
-                    //    "interpelationType": $scope.intpl.inter,
-                    //    "interpelationPriority": $scope.intpl.selectedInterpelationPriority,
-                    //    "interpelationDate": $scope.intpl.interpelationDateInitialACSV,
-                    //    "executionDate": null,
-                    //    "country": $scope.intpl.selectedCountry,
-                    //    "customsOffice": null,
-                    //    "subjectType": $scope.intpl.selectedSubjectType,
-                    //    "subjectTypeOptional": null,
-                    //    "authority": $scope.intpl.selectedAuthoritie,
-                    //    "applicantInterpelationDate": null,
-                    //    "description": $scope.intpl.description,
-            };
-            var id = $routeParams.id;
-            console.log($scope.intpl);
-            //console.log(intplObject);
-            //var intplObjectPretty = angular.toJson(intplObject);
-            //console.log(intplObjectPretty);
-            //EmailImportFactory.create({id:id},$scope.intpl);
-            Notification("Mesajul a fost importat");
-        };
-
-    }
-]);
 app.directive('createInterpelation', function() {
     return {
         restrict: 'E',

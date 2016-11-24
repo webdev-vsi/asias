@@ -7,6 +7,7 @@
     <link rel="stylesheet" media="screen" href="/css/dashboard.css">
     <link rel="stylesheet" media="screen" href="/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="/css/angular-ui-notification.css">
+    <link rel="stylesheet" href="/css/loading-bar.css" />
     <link type="application/font-woff2" href="/fonts/glyphicons-halflings-regular.woff2">
 </head>
 
@@ -52,7 +53,7 @@
 
                 <ul class="nav">
                     <li><a href="#/"><span class="glyphicon glyphicon-list-alt"></span> Toate <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#/?type=entries"><span class="glyphicon glyphicon-download"></span> Intrari <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#/?type=entries"><span class="glyphicon glyphicon-download"></span> Intrari<span class="sr-only">(current)</span></a></li>
                     <li><a href="#/?type=output"><span class="glyphicon glyphicon-upload"></span> Iesiri</a></li>
                     <li ng-controller="EmailCountCtrl"><a href="#/email-list"><span class="glyphicon glyphicon-inbox"></span> Lista email <span id="mailCount" class="badge">{{emailsCount}}</span> </a> </li>
                 </ul>
@@ -140,6 +141,7 @@
     <script src="js/angular-ui-notification.js"></script>
     <script src="js/FileSaver.js"></script>
     <script src="js/ui-bootstrap.js"></script>
+    <script src="js/loading-bar.js"></script>
     <!--script>
           $('#create-interpellation').draggable();
         </script-->

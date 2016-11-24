@@ -3,7 +3,7 @@
 
 var services = angular.module('ngAsiasApp.services', ['ngResource']);
 
-var baseUrl = 'http://localhost:8080';
+var baseUrl = 'http://10.2.200.190:8080';
 
 //INTERPELATION SERVICES
 services.factory('InterpelationsFactory', function($resource) {
@@ -11,6 +11,14 @@ services.factory('InterpelationsFactory', function($resource) {
         query: {
             method: 'GET',
             isArray: true
+        }
+    });
+});
+
+services.factory('InterpelationPaginator', function($resource) {
+    return $resource(baseUrl + '/paginator/:page/:size/:direction', {}, {
+        query: {
+            method: 'GET'
         }
     });
 });
@@ -156,7 +164,10 @@ services.factory('EmailImportFactory', function($resource) {
             method: 'GET'
         },
         create: {
-            method: 'POST'
+            method: 'POST',
+            params: {
+                id: '@id'
+            }
         }
     });
 });

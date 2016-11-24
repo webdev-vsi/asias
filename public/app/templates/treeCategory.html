@@ -3,9 +3,9 @@ fixing bug of clicking edit on parent and
 enabling editing on all descendents -->
 <div class="panel panel-default interpelation-body">
     <div ng-click="item.showBody =! item.showBody" class="panel-heading">
-        <span>  Interpelarea Nr:  {{item.interpelationNr}} ;</span>
-        <span>  Autoritatea:  {{item.authority.authorityName}} ;</span>
-        <span>  Descrirerea: {{item.description}};</span>
+        <span><b>Interpelarea Nr:</b>{{item.interpelationNr}} ;</span>
+        <span><b>Autoritatea:</b>{{item.authority.authorityName}} ;</span>
+        <span><b>Descrirerea:</b>{{item.description}};</span>
     </div>
     <div ng-show="item.showBody" class="panel-body">
         <form class="form-horizontal">
@@ -15,18 +15,41 @@ enabling editing on all descendents -->
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="col-sm-6 " for="interpelationNr">Nr. interpelare</label>
+                        <label class="col-sm-6" for="interpelationType">
+                        Tip demers:
+                      </label>
                         <div class="col-sm-6">
-                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationNr}}</p>
-                            <input ng-show="item.editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.interpelationNr">
+                            <span ng-hide="item.editMode">
+                              {{item.interpelationType || '-'}}
+                          </span>
+                            <select ng-show="item.editMode" ng-init="item.interpelationType" class="form-control" ng-model="item.interpelationType" ng-options="selectedInterpelationType for selectedInterpelationType  in interpelationType ">
+                          </select>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-sm-6" for="interpelationPriority">
+                          Prioritatea:
+                        </label>
+                        <div class="col-sm-6">
+                            <span ng-hide="item.editMode" ng-class="{ 'priority-low': item.interpelationPriority=='SCAZUTA' , 'priority-middle': item.interpelationPriority=='MEDIE' , 'priority-high': item.interpelationPriority=='RIDICATA' ,} ">
+                                {{item.interpelationPriority || '-'}}
+                            </span>
+                            <select ng-show="item.editMode" class="form-control" ng-model="item.interpelationPriority" ng-options="selectedInterpelationPriority for selectedInterpelationPriority  in interpelationPriority ">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 " for="interpelationNr">Nr. interpelare</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationNr || '-'}}</p>
+                            <input ng-show="item.editMode" type="text" class="form-control" id="interpelationNr" ng-model="item.interpelationNr">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class=" col-sm-6" for="interpelationDate">Data</label>
                         <div class="col-sm-6">
-                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationDate | date: 'dd-MM-yyyy'}}</p>
-                            <div ng-show="item.editMode" class='input-group date' id='datetimepicker1'>
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.interpelationDate | date: 'dd-MM-yyyy' || '-'}}</p>
+                            <div ng-show="item.editMode" class='input-group date' id='interpelationDate'>
                                 <input ng-init="null" datetimepicker name="interpelationDate" ng-model="item.interpelationDate" type='text' class="form-control" />
                                 <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -37,62 +60,113 @@ enabling editing on all descendents -->
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-6" for="interpelationNr">Tara</label>
+                        <label class="col-sm-6" for="country">Tara</label>
                         <div class="col-sm-6">
-                            <p ng-hide="item.editMode" class="form-control-static">{{item.country.countryName}}</p>
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.country.countryName || '-'}}</p>
                             <!--input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.country.countryName"-->
-                            <select ng-init="item.selectedCountry=item.country.cod" ng-show="item.editMode" class="form-control" ng-model="item.selectedCountry" ng-options="selectedCountry.cod as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                            <select ng-init="item.selectedCountry=item.country.countryCod2" ng-show="item.editMode" class="form-control" ng-model="item.selectedCountry" ng-options="selectedCountry.countryCod2 as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-6" for="interpelationNr">Subiect</label>
+                        <label class="col-sm-6" for="subjectType">Subiect</label>
                         <div class="col-sm-6">
-                            <p ng-hide="item.editMode" class="form-control-static">{{item.subjectType.subjectName}}</p>
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.subjectType.subjectName || '-'}}</p>
                             <!--input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.subjectType.id"-->
                             <select ng-init="item.selectedSubjectType=item.subjectType.id" ng-show="item.editMode" class="form-control" ng-model="item.selectedSubjectType" ng-options="selectedSubjectType.id as selectedSubjectType.subjectName for selectedSubjectType in subjectTypes | orderBy:'subjectName'">
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="subjectTypeOptional">Subiectul Cererii optional:</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.subjectTypeOptional || '-'}}</p>
+                            <input ng-show="item.editMode" type="text" class="form-control" id="subjectTypeOptional" ng-model="item.subjectTypeOptional">
                         </div>
                     </div>
                 </div>
                 <!--begin second col -->
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="col-sm-6" for="authorityName">Data demersului solicitantului:</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.applicantInterpelationDate | date: 'dd-MM-yyyy' || '-'}}</p>
+                            <div ng-show="item.editMode" class='input-group date' id='applicantInterpelationDate'>
+                                <input ng-init="null" datetimepicker name="applicantInterpelationDate" ng-model="item.applicantInterpelationDate" type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="authorityName">Denumirea autoritatii solicitante:</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.authorityName || '-'}}</p>
+                            <input ng-show="item.editMode" type="text" class="form-control" id="authorityName" ng-model="item.authorityName">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Autoritatea</label>
                         <div class="col-sm-6">
-                            <p ng-hide="item.editMode" class="form-control-static">{{item.authority.authorityName}}</p>
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.authority.authorityName || '-'}}</p>
                             <!--input ng-show="editMode" type="text" class="form-control" id="exampleInputEmail1" ng-model="item.authority.authorityName"-->
                             <select ng-show="item.editMode" ng-init="item.selectedAuthoritie=item.authority.id" class="form-control" ng-model="item.selectedAuthoritie" ng-options="selectedAuthoritie.id as selectedAuthoritie.authorityName for selectedAuthoritie in authorities | orderBy:'authorityName'">
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Descrierea</label>
                         <div class="col-sm-6">
-                            <p ng-hide="item.editMode" class="form-control-static">{{item.description}}</p>
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.description || '-'}}</p>
                             <textarea ng-show="item.editMode" class="form-control" rows="5" ng-model="item.description"></textarea>
                         </div>
                     </div>
-
-                    <div class="form-group">
+                    <div ng-hide="item.mailMessage === null" class="form-group">
                         <label class="col-sm-6" for="interpelationNr">Mesaj din email</label>
                         <div class="col-sm-6">
                             <textarea ng-show="item.editMode" class="form-control" rows="5" ng-model="item.mailMessage"></textarea>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="authorityName">Termen de executie:</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.executionDate | date: 'dd-MM-yyyy' || '-'}}</p>
+                            <div ng-show="item.editMode" class='input-group date' id='executionDate'>
+                                <input ng-init="null" datetimepicker name="executionDate" ng-model="item.executionDate" type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6" for="authorityName">Data control:</label>
+                        <div class="col-sm-6">
+                            <p ng-hide="item.editMode" class="form-control-static">{{item.dateControl | date: 'dd-MM-yyyy' || '-'}}</p>
+                            <div ng-show="item.editMode" class='input-group date' id='dateControl'>
+                                <input datetimepicker name="dateControl" ng-model="item.dateControl" type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br>
-            <!--end second col -->
             <div class="row">
-                <div class="btn-group col-md-12 " role="group" aria-label="...">
-                    <button ng-click="editNode(item); item.editMode = !item.editMode" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Editarea</button>
-                    <button ng-click="addNode(item)" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share"></span> Crearea raspuns</button>
+                <div class="btn-group col-md-12" role="group" aria-label="...">
+                    <button ng-click="editNode(item); item.editMode = !item.editMode;" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Editarea</button>
                     <button ng-show="item.editMode" class="btn btn-success" ng-click="saveInterpelation(item)"><span class="glyphicon glyphicon-check"></span> Salveaza</button>
+                    <button ng-click="addNode(item)" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share"></span> Crearea raspuns</button>
                     <button ng-show="true" class="btn btn-danger" ng-click="removeItem(item)"><span class="glyphicon glyphicon-trash"></span> Sterge</button>
                 </div>
             </div>
+            <!--end second col -->
+    </div>
+    <!-- Interpelations Controls -->
+    <div class="panel-footer">
 
     </div>
     </form>

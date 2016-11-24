@@ -1,25 +1,66 @@
 <div ng-init="searchForm = false" class="panel panel-default panel-margin table-responsive">
     <div class="panel-heading">
+        <label>Pagina: {{currentPage}} din {{pageCount}}, numarul total de inregistrari: {{rowCount}}</label>
+        <nav class="pagination-custom" aria-label="Page navigation">
+            <ul class=" pagination pagination-sm">
+                <li>
+                    <a ng-click="firstPage()">
+                  Prima
+                </a>
+                </li>
+                <li>
+                    <a ng-click="prevPage() " aria-label="Previous ">
+                        <span aria-hidden="true ">&laquo;</span>
+                    </a>
+                </li>
+                <li ng-repeat="page in PaginatorElements" ng-if="$index > 0">
+                    <a ng-click="thisPage(page)">{{page}}</a>
+                </li>
+                <li>
+                    <a ng-click="morePages()">
+                        <span>...</span>
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="nextPage() " aria-label="Next ">
+                        <span aria-hidden="true ">&raquo;</span>
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="lastPage()">
+                    Ultima
+                  </a>
+                </li>
+            </ul>
+        </nav>
         <label ng-click="searchForm =! searchForm"><span class="glyphicon glyphicon-search"></span> Cautare</label>
         <div class=" row " ng-show="searchForm ">
             <div class="col-sm-3 ">
                 <div class="input-group ">
                     <span class="input-group-addon ">Nr. interpelare: </span>
-                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.interpelationNr" />
+                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.interpelationNr " />
                 </div>
             </div>
             <div class="col-sm-3 ">
                 <div class="input-group ">
                     <span class="input-group-addon ">Subiectul: </span>
-                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.subjectType.subjectName" />
+                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.subjectType.subjectName " />
                 </div>
             </div>
             <div class="col-sm-3 ">
                 <div class="input-group ">
                     <span class="input-group-addon ">Detalii: </span>
-                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.description" />
+                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.description " />
                 </div>
             </div>
+        </div>
+
+        <div class="row ">
+            <div ng-hide="true " class="col-md-12 ">
+                <button class="btn btn-primary " ng-click="prev() ">Precedenta < </button>
+                <button class="btn btn-primary " ng-click="next() ">Urmatoarea > </button>
+            </div>
+
         </div>
     </div>
     <table class="table table-bordered table-striped table-hover ">
@@ -32,7 +73,7 @@
             <th>Denumirea <br /> solicitantului</th>
             <th>Subiectul</th>
             <!--th>Referinta de intrare
-                <br /> a solicitantului</th-->
+            <br /> a solicitantului</th-->
             <th>Detalii subiect</th>
             <!--th>Mesaju</th-->
             <th>Prioritatea</th>
@@ -44,7 +85,7 @@
                 <td>{{interpelation.interpelationType }}</td>
                 <td>{{interpelation.interpelationNr }}</td>
                 <td>{{interpelation.interpelationDate | date:'dd-MM-yyyy'}}</td>
-                <td>{{interpelation.country.countryCod3}}</td>
+                <td>{{interpelation.country.countryCod2}}</td>
                 <td>{{interpelation.authority.authorityName}}</td>
                 <td>{{interpelation.subjectType.subjectName}}</td>
                 <!--td>{{interpelation.authorityInterpelationNr}}</td-->
@@ -59,4 +100,5 @@
             </tr>
         </tbody>
     </table>
+
 </div>
