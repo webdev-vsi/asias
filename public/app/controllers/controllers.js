@@ -32,8 +32,6 @@ app.controller('ReportsCtrl', ['$scope',
             });
             saveAs(blob, "Report.xls");
         };
-
-
     }
 ]);
 app.controller('IntplListCtrl', ['$scope',
@@ -42,18 +40,25 @@ app.controller('IntplListCtrl', ['$scope',
     'InterpelationPaginator',
     '$location',
     '$rootScope',
+    'InterpelationSubjectFactory',
     function(
         $scope,
         InterpelationsFactory,
         InterpelationFactory,
         InterpelationPaginator,
         $location,
-        $rootScope
+        $rootScope,
+        InterpelationSubjectFactory
     ) {
+
 
         $scope.pageSize = 15;
         $scope.currentPage = 0;
         $scope.displayPagesLength = 10;
+
+
+        $scope.subjectTypes = InterpelationSubjectFactory.query();
+
 
 
         function getDirection() {
@@ -70,11 +75,24 @@ app.controller('IntplListCtrl', ['$scope',
         }
 
 
-        var renderPagedTree = function() {
+
+        $scope.fetchdata = function() {
+            var searchNr = $scope.keyUpSearch.interpelationNr;
+            var searchSubject = $scope.selectedSubjectType;
+            var description = $scope.keyUpSearch.description;
+            console.log(searchNr + ' - ' + searchSubject);
+            renderPagedTree(searchNr, searchSubject, description);
+        };
+
+
+        var renderPagedTree = function(intplNr, subj, description) {
             InterpelationPaginator.query({
                 page: $scope.currentPage,
                 size: $scope.pageSize,
-                direction: getDirection()
+                direction: getDirection(),
+                interpelationNr: intplNr || 'TOATE',
+                subjectType: subj || 'TOATE',
+                description: description || 'TOATE'
             }, function(response) {
                 //console.log(InOut.type);
                 $scope.interpelations = response.result;

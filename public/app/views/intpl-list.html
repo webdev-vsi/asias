@@ -34,25 +34,32 @@
             </ul>
         </nav>
         <label ng-click="searchForm =! searchForm"><span class="glyphicon glyphicon-search"></span> Cautare</label>
+
         <div class=" row " ng-show="searchForm ">
             <div class="col-sm-3 ">
                 <div class="input-group ">
                     <span class="input-group-addon ">Nr. interpelare: </span>
-                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.interpelationNr " />
+                    <input ng-keyup="fetchdata()" class="form-control " type="text " name="keyUpSearch-nr-interpelare " ng-model="keyUpSearch.interpelationNr" ng-init="keyUpSearch.interpelationNr=''" />
                 </div>
             </div>
             <div class="col-sm-3 ">
                 <div class="input-group ">
                     <span class="input-group-addon ">Subiectul: </span>
-                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.subjectType.subjectName " />
+                    <select ng-change="fetchdata()" class="form-control" ng-model="selectedSubjectType" ng-options="selectedSubjectType.id as selectedSubjectType.subjectName for selectedSubjectType in subjectTypes | orderBy:'subjectName'">
+                      <option value="">
+
+                      </option>
+                    </select>
+                    <!--input ng-keyup="fetchdata()" class="form-control " type="text " name="keyUpSearch-nr-interpelare " ng-model="keyUpSearch.subjectType.subjectName " /-->
                 </div>
             </div>
             <div class="col-sm-3 ">
                 <div class="input-group ">
                     <span class="input-group-addon ">Detalii: </span>
-                    <input class="form-control " type="text " name="nr-interpelare " ng-model="search.description " />
+                    <input ng-keyup="fetchdata()" class="form-control " type="text " name="keyUpSearch-nr-interpelare " ng-model="keyUpSearch.description" />
                 </div>
             </div>
+
         </div>
 
         <div class="row ">

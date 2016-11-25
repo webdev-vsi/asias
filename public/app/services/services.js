@@ -16,7 +16,7 @@ services.factory('InterpelationsFactory', function($resource) {
 });
 
 services.factory('InterpelationPaginator', function($resource) {
-    return $resource(baseUrl + '/paginator/:page/:size/:direction', {}, {
+    return $resource(baseUrl + '/paginator/:page/:size/:direction/:interpelationNr/:subjectType/:description', {}, {
         query: {
             method: 'GET'
         }
