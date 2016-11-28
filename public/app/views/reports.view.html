@@ -3,37 +3,66 @@
         <label><span class="glyphicon glyphicon-list-alt"></span> Rapoarte</label>
     </div>
     <div class="panel-body">
-        <button class="btn btn-default" ng-click="exportData()">EXPORT EXCEL <span class="glyphicon glyphicon-save"></span></button>
+        <div class="row">
+            <div class="col-md-12 btn-group horizontal">
+                <!--button class="btn btn-primary" ng-click="getReport()">Genereaza</button-->
+                <button ng-show="showExportBtn" class="btn btn-default" ng-click="exportData()">EXPORT EXCEL <span class="glyphicon glyphicon-save"></span></button>
+            </div>
+            <br /><br />
+            <div class="col-md-2">
+                <label>Selectati Tara</label>
+                <select ng-change="getReport()" class="form-control" ng-model="selectedCountry" ng-options="selectedCountry.countryCod2 as selectedCountry.countryName for selectedCountry in countries | orderBy:'countryName'">
+                </select>
+            </div>
+        </div>
         <div id="exportable">
             <table class="table">
                 <thead>
                     <tr>
                         <th>
-                            interpelationNr
+                            Numarul Interpelarii
                         </th>
                         <th>
-                            interpelationPriority
+                            Data
                         </th>
                         <th>
-                            interpelationType
+                            Directia
+                        </th>
+                        <th>
+                            Decrierea
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in table">
                         <td>
-                            {{item.interpelationNr}}
+                            {{item.interpelationNr }}
                         </td>
                         <td>
-                            {{item.interpelationPriority}}
+                            {{item.interpelationDate | date:'dd-MM-yyyy'}}
                         </td>
                         <td>
                             {{item.interpelationType}}
+                        </td>
+                        <td>
+                            {{item.description}}
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <br />
+        <center ng-hide="table">
+            Nu sunt date...Selectati un criteriu
+        </center>
+        <div class="col-md-12">
+            <hr />
+            <label>Tara selectata: {{selectedCountry}}</label>
+            <br />
+            <label>Nr total de interpelari deschise: {{totalOpen}}</label>
+            <br />
+            <label>Nr total de interpelari inchise: {{totalClosed}}</label>
+            <br />
+            <label>Nr total de interpelari: {{totalCount}}</label>
+        </div>
     </div>
 </div>

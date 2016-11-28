@@ -1,6 +1,7 @@
 <div class="panel panel-default panel-margin table-responsive">
     <div class="panel-heading"> <label><span class="glyphicon glyphicon-list"></span> Lista Emailuri </label></div>
     <div ng-controller="EmailListCtrl">
+        <label ng-show="printError">{{printError}}</label>
         <table class="table table-bordered table-width-fix">
             <thead>
                 <!--th>ID</th-->

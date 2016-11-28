@@ -15,16 +15,32 @@ app.run(function($rootScope, $templateCache) {
 });
 app.controller('ReportsCtrl', ['$scope',
     'InterpelationsFactory',
-    function($scope, InterpelationsFactory) {
+    'CountryFactory',
+    'ReportsFactory',
+    function($scope, InterpelationsFactory, CountryFactory, ReportsFactory) {
+        $scope.showExportBtn = false;
+        $scope.countries = CountryFactory.query();
 
-        InterpelationsFactory.query(
-            function(data) {
-                $scope.table = data;
-                console.log(data);
-            },
-            function(error) {
-                alert(error);
-            });
+        $scope.getReport = function() {
+            ReportsFactory.query({
+                    id: $scope.selectedCountry
+                },
+                function(data) {
+                    $scope.showExportBtn = true;
+                    $scope.table = data;
+
+                    function isClosed(value) {
+                        return value.isClosed === true;
+                    }
+                    $scope.totalCount = data.length;
+                    $scope.totalClosed = data.filter(isClosed).length;
+                    $scope.totalOpen = $scope.totalCount - $scope.totalClosed;
+                    //console.log(totalClosed);
+                },
+                function(error) {
+                    return;
+                });
+        };
 
         $scope.exportData = function() {
             var blob = new Blob([document.getElementById('exportable').innerHTML], {
@@ -52,7 +68,7 @@ app.controller('IntplListCtrl', ['$scope',
     ) {
 
 
-        $scope.pageSize = 15;
+        $scope.pageSize = 10;
         $scope.currentPage = 0;
         $scope.displayPagesLength = 10;
 
@@ -970,11 +986,17 @@ app.controller('EmailCountCtrl', ['$scope', '$http', 'EmailCountFactory', 'Email
     //$scope.emailsCount = emaillength.length;
     //$scope.emailsCount = length.length();
     //$scope.emailsCount = EmailCountFactory.query();
+
 }]);
 app.controller('EmailListCtrl', ['$scope', '$http', 'EmailListFactory', '$location', 'EmailImportFactory',
     function($scope, $http, EmailListFactory, $location, EmailImportFactory) {
-        $scope.listEmails = EmailListFactory.query();
-
+        $scope.listEmails = EmailListFactory.query({},
+            function(success) {
+                $scope.printError = false;
+            },
+            function(error) {
+                $scope.printError = "Nu s-a gasit nici un mesaj, sau a aparut o eroare!";
+            });
         $scope.importEmail = function(emailId) {
             $location.path('/email-import/' + emailId);
         };

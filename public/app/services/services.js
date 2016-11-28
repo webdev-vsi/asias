@@ -116,7 +116,15 @@ services.factory('CountryFactory', function($resource) {
         }
     });
 });
-
+//Country Reports Service
+services.factory('ReportsFactory', function($resource) {
+    return $resource(baseUrl + '/interpelationByCountry/:id', {}, {
+        query: {
+            method: 'GET',
+            isArray: true
+        }
+    });
+});
 
 // CUSTOMS-OFFICES SERVICES
 services.factory('CustomsOfficesFactory', function($resource) {
